@@ -35,5 +35,5 @@ cd chess-squares
 open index.html
 # or use a local server:
 python -m http.server 8000
-
+```
 <img width="1280" height="800" alt="Screenshotted 2026-05-04 at 19 17 32" src="https://github.com/user-attachments/assets/11618537-1ba0-4f55-ba07-5856753b1c22" />
