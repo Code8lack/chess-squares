@@ -1,0 +1,217 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #4CAF50;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #4CAF50;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+.app-header {
+    background-color: #000000;
+    padding: 20px;
+    text-align: center;
+}
+
+.app-header h1 {
+    color: #4CAF50;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #888;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.score-section {
+    background-color: #4CAF50;
+    padding: 20px;
+    text-align: center;
+}
+
+.score-label {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(0,0,0,0.2);
+    padding: 10px 20px;
+    border-radius: 40px;
+    display: inline-block;
+}
+
+.square-display {
+    background-color: #4CAF50;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.square-name {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #333333;
+    background-color: rgba(255,255,255,0.5);
+    padding: 20px;
+    border-radius: 20px;
+    display: inline-block;
+    min-width: 200px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 4px;
+}
+
+.question-text {
+    font-size: 1.2rem;
+    color: #333333;
+    margin-top: 10px;
+}
+
+.button-container {
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.chess-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: 3px solid transparent;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    font-family: inherit;
+}
+
+.chess-btn:active {
+    transform: scale(0.97);
+}
+
+.chess-btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.dark-btn {
+    background-color: #2F4F4F;
+    color: #E0E0E0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.dark-btn:active:not(.disabled) {
+    background-color: #3F5F5F;
+}
+
+.light-btn {
+    background-color: #FFFFFF;
+    color: #333333;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.light-btn:active:not(.disabled) {
+    background-color: #D3D3B0;
+}
+
+.message-area {
+    background-color: #4CAF50;
+    padding: 20px;
+    text-align: center;
+    min-height: 100px;
+}
+
+.feedback-message {
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 15px;
+    background-color: rgba(0,0,0,0.1);
+}
+
+.feedback-correct {
+    color: #18692f;
+}
+
+.feedback-incorrect {
+    color: #c94953;
+}
+
+.image-area {
+    background-color: #4CAF50;
+    padding: 20px;
+    text-align: center;
+    border-top: 2px solid rgba(0,0,0,0.1);
+}
+
+.chessboard-svg {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.image-caption {
+    margin-top: 10px;
+    color: #333333;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+    .square-name {
+        font-size: 3rem;
+        min-width: 150px;
+    }
+    
+    .chess-btn {
+        font-size: 1.2rem;
+        padding: 15px;
+        min-width: 100px;
+    }
+    
+    .score-label {
+        font-size: 1.5rem;
+    }
+    
+    .feedback-message {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .button-container {
+        gap: 10px;
+    }
+    
+    .chess-btn {
+        min-width: 80px;
+        padding: 12px;
+        font-size: 1rem;
+    }
+}
