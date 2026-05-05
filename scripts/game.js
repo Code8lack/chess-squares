@@ -81,7 +81,7 @@ function checkAnswer(userGuess) {
     
     setTimeout(() => {
         askNewQuestion();
-    }, 3500);
+    }, 1000);
 }
 
 // Event listeners
