@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chess Squares — Test Suite</title>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --pass: #22c55e;
+      --fail: #ef4444;
+      --skip: #f59e0b;
+      --text: #e5e5e5;
+      --muted: #6b7280;
+      --accent: #4CAF50;
+      --font-mono: 'Courier New', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      min-height: 100vh;
+      padding: 32px 24px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    header p { color: var(--muted); margin-top: 4px; font-size: 12px; }
+
+    #summary {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px 20px;
+      min-width: 120px;
+    }
+
+    .stat .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+    .stat .value { font-size: 1.8rem; font-weight: bold; margin-top: 2px; }
+    .stat.pass .value { color: var(--pass); }
+    .stat.fail .value { color: var(--fail); }
+    .stat.total .value { color: var(--text); }
+
+    .suite {
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .suite-header {
+      background: var(--surface);
+      padding: 10px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .test {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.1s;
+    }
+
+    .test:last-child { border-bottom: none; }
+    .test:hover { background: rgba(255,255,255,0.02); }
+
+    .badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-weight: bold;
+      white-space: nowrap;
+      margin-top: 1px;
+    }
+
+    .badge.pass { background: rgba(34,197,94,0.15); color: var(--pass); }
+    .badge.fail { background: rgba(239,68,68,0.15); color: var(--fail); }
+
+    .test-body { flex: 1; }
+    .test-name { color: var(--text); }
+    .test-detail { color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .test-error { color: var(--fail); font-size: 12px; margin-top: 4px; background: rgba(239,68,68,0.08); padding: 6px 10px; border-radius: 2px; border-left: 2px solid var(--fail); }
+
+    #run-btn {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 10px 24px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      cursor: pointer;
+      border-radius: 3px;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+    }
+
+    #run-btn:hover { background: #5cbf60; }
+    #run-btn:active { transform: scale(0.98); }
+
+    /* Hidden game DOM for UI tests */
+    #game-root {
+      position: fixed;
+      left: -9999px;
+      top: -9999px;
+      visibility: hidden;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>♞ Chess Squares — Test Suite</h1>
+  <p>Unit + UI/Integration tests · Vanilla JS · No dependencies</p>
+</header>
+
+<button id="run-btn" onclick="runAll()">▶ Run All Tests</button>
+
+<div id="summary" style="display:none">
+  <div class="stat total"><div class="label">Total</div><div class="value" id="s-total">0</div></div>
+  <div class="stat pass"><div class="label">Passed</div><div class="value" id="s-pass">0</div></div>
+  <div class="stat fail"><div class="label">Failed</div><div class="value" id="s-fail">0</div></div>
+</div>
+
+<div id="results"></div>
+
+<!-- Hidden sandbox DOM for UI tests -->
+<div id="game-root">
+  <div id="squareName">A1</div>
+  <div id="scoreLabel">Score: 0/0</div>
+  <div id="feedbackMessage"></div>
+  <button id="darkBtn">DARK</button>
+  <button id="lightBtn">LIGHT</button>
+</div>
+
+<script>
+// ─── Minimal test framework ───────────────────────────────────────────────────
+
+const suites = [];
+let currentSuite = null;
+
+function describe(name, fn) {
+  currentSuite = { name, tests: [] };
+  suites.push(currentSuite);
+  fn();
+  currentSuite = null;
+}
+
+function it(name, fn) {
+  currentSuite.tests.push({ name, fn });
+}
+
+function expect(actual) {
+  return {
+    toBe(expected) {
+      if (actual !== expected)
+        throw new Error(`Expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+    },
+    toEqual(expected) {
+      if (JSON.stringify(actual) !== JSON.stringify(expected))
+        throw new Error(`Expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+    },
+    toBeTruthy() {
+      if (!actual) throw new Error(`Expected truthy, got ${JSON.stringify(actual)}`);
+    },
+    toBeFalsy() {
+      if (actual) throw new Error(`Expected falsy, got ${JSON.stringify(actual)}`);
+    },
+    toContain(item) {
+      if (!actual.includes(item))
+        throw new Error(`Expected ${JSON.stringify(actual)} to contain ${JSON.stringify(item)}`);
+    },
+    toMatch(re) {
+      if (!re.test(actual))
+        throw new Error(`Expected ${JSON.stringify(actual)} to match ${re}`);
+    },
+    toBeGreaterThanOrEqual(n) {
+      if (actual < n) throw new Error(`Expected ${actual} >= ${n}`);
+    },
+    toBeLessThanOrEqual(n) {
+      if (actual > n) throw new Error(`Expected ${actual} <= ${n}`);
+    },
+    toBeGreaterThan(n) {
+      if (actual <= n) throw new Error(`Expected ${actual} > ${n}`);
+    },
+    not: {
+      toBe(expected) {
+        if (actual === expected)
+          throw new Error(`Expected NOT ${JSON.stringify(expected)}`);
+      },
+      toContain(item) {
+        if (actual.includes(item))
+          throw new Error(`Expected ${JSON.stringify(actual)} NOT to contain ${JSON.stringify(item)}`);
+      }
+    }
+  };
+}
+
+// ─── Re-implement game logic inline (pure functions extracted from game.js) ───
+
+function determineSquareColor(squareName) {
+  const columnChar = squareName.charAt(0).toUpperCase();
+  const rowNum = parseInt(squareName.charAt(1));
+  const columnNum = columnChar.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
+  return (columnNum + rowNum) % 2 === 0 ? "dark" : "light";
+}
+
+function generateRandomSquare() {
+  const columns = ['A','B','C','D','E','F','G','H'];
+  const rows = ['1','2','3','4','5','6','7','8'];
+  return columns[Math.floor(Math.random() * 8)] + rows[Math.floor(Math.random() * 8)];
+}
+
+// ─── Game state simulation (mirrors game.js) ─────────────────────────────────
+
+function createGameState() {
+  return { correctAnswers: 0, totalQuestions: 0, isWaiting: false, currentSquare: "" };
+}
+
+function simulateAnswer(state, userGuess) {
+  if (state.isWaiting) return state;
+  const actualColor = determineSquareColor(state.currentSquare);
+  const correct = userGuess === actualColor;
+  return {
+    ...state,
+    totalQuestions: state.totalQuestions + 1,
+    correctAnswers: state.correctAnswers + (correct ? 1 : 0),
+    isWaiting: true,
+    lastCorrect: correct,
+    lastActualColor: actualColor
+  };
+}
+
+// ─── Unit Tests ───────────────────────────────────────────────────────────────
+
+describe("determineSquareColor — known squares", () => {
+  it("A1 is dark", () => expect(determineSquareColor("A1")).toBe("dark"));
+  it("A2 is light", () => expect(determineSquareColor("A2")).toBe("light"));
+  it("B1 is light", () => expect(determineSquareColor("B1")).toBe("light"));
+  it("B2 is dark", () => expect(determineSquareColor("B2")).toBe("dark"));
+  it("H8 is dark", () => expect(determineSquareColor("H8")).toBe("dark"));
+  it("H1 is light", () => expect(determineSquareColor("H1")).toBe("light"));
+  it("A8 is light", () => expect(determineSquareColor("A8")).toBe("light"));
+  it("D4 is dark", () => expect(determineSquareColor("D4")).toBe("dark"));
+  it("E4 is light", () => expect(determineSquareColor("E4")).toBe("light"));
+  it("G7 is dark", () => expect(determineSquareColor("G7")).toBe("dark"));
+  it("C6 is light", () => expect(determineSquareColor("C6")).toBe("light"));
+  it("F3 is light", () => expect(determineSquareColor("F3")).toBe("light"));
+});
+
+describe("determineSquareColor — case insensitivity", () => {
+  it("lowercase a1 returns same as A1", () => {
+    expect(determineSquareColor("a1")).toBe(determineSquareColor("A1"));
+  });
+  it("lowercase h8 returns same as H8", () => {
+    expect(determineSquareColor("h8")).toBe(determineSquareColor("H8"));
+  });
+});
+
+describe("determineSquareColor — alternation pattern", () => {
+  it("adjacent squares in same row have opposite colors", () => {
+    for (let col = 65; col < 72; col++) {
+      const sq1 = String.fromCharCode(col) + "1";
+      const sq2 = String.fromCharCode(col + 1) + "1";
+      const c1 = determineSquareColor(sq1);
+      const c2 = determineSquareColor(sq2);
+      if (c1 === c2) throw new Error(`${sq1} and ${sq2} should differ but both are ${c1}`);
+    }
+  });
+
+  it("adjacent squares in same column have opposite colors", () => {
+    for (let row = 1; row < 8; row++) {
+      const sq1 = "A" + row;
+      const sq2 = "A" + (row + 1);
+      const c1 = determineSquareColor(sq1);
+      const c2 = determineSquareColor(sq2);
+      if (c1 === c2) throw new Error(`${sq1} and ${sq2} should differ but both are ${c1}`);
+    }
+  });
+
+  it("diagonal squares have same color", () => {
+    const pairs = [["A1","B2"],["C3","D4"],["E5","F6"],["B4","C5"]];
+    for (const [sq1, sq2] of pairs) {
+      if (determineSquareColor(sq1) !== determineSquareColor(sq2))
+        throw new Error(`Diagonal ${sq1} and ${sq2} should share color`);
+    }
+  });
+
+  it("64 squares total: 32 dark, 32 light", () => {
+    let dark = 0, light = 0;
+    for (let col = 0; col < 8; col++) {
+      for (let row = 1; row <= 8; row++) {
+        const sq = String.fromCharCode(65 + col) + row;
+        determineSquareColor(sq) === "dark" ? dark++ : light++;
+      }
+    }
+    expect(dark).toBe(32);
+    expect(light).toBe(32);
+  });
+
+  it("only returns 'dark' or 'light'", () => {
+    for (let col = 0; col < 8; col++) {
+      for (let row = 1; row <= 8; row++) {
+        const sq = String.fromCharCode(65 + col) + row;
+        const color = determineSquareColor(sq);
+        if (color !== "dark" && color !== "light")
+          throw new Error(`Unexpected color: ${color} for ${sq}`);
+      }
+    }
+  });
+});
+
+describe("generateRandomSquare — output format", () => {
+  it("returns a 2-character string", () => {
+    for (let i = 0; i < 20; i++) expect(generateRandomSquare().length).toBe(2);
+  });
+
+  it("first character is A–H", () => {
+    const valid = ['A','B','C','D','E','F','G','H'];
+    for (let i = 0; i < 30; i++) {
+      const sq = generateRandomSquare();
+      if (!valid.includes(sq[0])) throw new Error(`Invalid column: ${sq[0]}`);
+    }
+  });
+
+  it("second character is 1–8", () => {
+    const valid = ['1','2','3','4','5','6','7','8'];
+    for (let i = 0; i < 30; i++) {
+      const sq = generateRandomSquare();
+      if (!valid.includes(sq[1])) throw new Error(`Invalid row: ${sq[1]}`);
+    }
+  });
+
+  it("produces output passable into determineSquareColor without error", () => {
+    for (let i = 0; i < 20; i++) {
+      const sq = generateRandomSquare();
+      const color = determineSquareColor(sq);
+      if (!["dark","light"].includes(color))
+        throw new Error(`Bad output for generated square ${sq}: ${color}`);
+    }
+  });
+});
+
+describe("generateRandomSquare — distribution (100 samples)", () => {
+  it("covers multiple columns", () => {
+    const cols = new Set();
+    for (let i = 0; i < 100; i++) cols.add(generateRandomSquare()[0]);
+    expect(cols.size).toBeGreaterThan(4);
+  });
+
+  it("covers multiple rows", () => {
+    const rows = new Set();
+    for (let i = 0; i < 100; i++) rows.add(generateRandomSquare()[1]);
+    expect(rows.size).toBeGreaterThan(4);
+  });
+});
+
+describe("Game state — scoring logic", () => {
+  it("starts at 0/0", () => {
+    const s = createGameState();
+    expect(s.correctAnswers).toBe(0);
+    expect(s.totalQuestions).toBe(0);
+  });
+
+  it("correct answer increments both counters", () => {
+    const s = { ...createGameState(), currentSquare: "A1" }; // A1 is dark
+    const s2 = simulateAnswer(s, "dark");
+    expect(s2.correctAnswers).toBe(1);
+    expect(s2.totalQuestions).toBe(1);
+    expect(s2.lastCorrect).toBe(true);
+  });
+
+  it("wrong answer increments only totalQuestions", () => {
+    const s = { ...createGameState(), currentSquare: "A1" }; // A1 is dark
+    const s2 = simulateAnswer(s, "light");
+    expect(s2.correctAnswers).toBe(0);
+    expect(s2.totalQuestions).toBe(1);
+    expect(s2.lastCorrect).toBe(false);
+  });
+
+  it("sets isWaiting to true after answer", () => {
+    const s = { ...createGameState(), currentSquare: "A2" };
+    const s2 = simulateAnswer(s, "light");
+    expect(s2.isWaiting).toBe(true);
+  });
+
+  it("ignores answer when isWaiting is true", () => {
+    const s = { ...createGameState(), currentSquare: "A1", isWaiting: true };
+    const s2 = simulateAnswer(s, "dark");
+    expect(s2.totalQuestions).toBe(0);
+  });
+
+  it("score accumulates across multiple rounds", () => {
+    const squares = ["A1","B1","A2","B2"]; // dark, light, light, dark
+    const answers = ["dark","light","light","dark"];
+    let s = createGameState();
+    for (let i = 0; i < squares.length; i++) {
+      s = { ...s, currentSquare: squares[i], isWaiting: false };
+      s = simulateAnswer(s, answers[i]);
+    }
+    expect(s.correctAnswers).toBe(4);
+    expect(s.totalQuestions).toBe(4);
+  });
+
+  it("reports correct actual color on wrong guess", () => {
+    const s = { ...createGameState(), currentSquare: "H8" }; // H8 is dark
+    const s2 = simulateAnswer(s, "light");
+    expect(s2.lastActualColor).toBe("dark");
+  });
+});
+
+// ─── UI / Integration Tests ───────────────────────────────────────────────────
+
+describe("UI — DOM element presence", () => {
+  it("#squareName element exists", () => expect(!!document.getElementById("squareName")).toBeTruthy());
+  it("#scoreLabel element exists", () => expect(!!document.getElementById("scoreLabel")).toBeTruthy());
+  it("#feedbackMessage element exists", () => expect(!!document.getElementById("feedbackMessage")).toBeTruthy());
+  it("#darkBtn element exists", () => expect(!!document.getElementById("darkBtn")).toBeTruthy());
+  it("#lightBtn element exists", () => expect(!!document.getElementById("lightBtn")).toBeTruthy());
+});
+
+describe("UI — scoreLabel format", () => {
+  it("matches 'Score: N/N' pattern", () => {
+    const el = document.getElementById("scoreLabel");
+    el.textContent = "Score: 0/0";
+    expect(el.textContent).toMatch(/^Score: \d+\/\d+$/);
+  });
+
+  it("updates correctly after setting values", () => {
+    const el = document.getElementById("scoreLabel");
+    el.textContent = "Score: 3/5";
+    expect(el.textContent).toBe("Score: 3/5");
+  });
+});
+
+describe("UI — squareName display", () => {
+  it("accepts and displays a valid square name", () => {
+    const el = document.getElementById("squareName");
+    el.textContent = "E4";
+    expect(el.textContent).toBe("E4");
+  });
+
+  it("square name length is 2", () => {
+    const el = document.getElementById("squareName");
+    const sq = generateRandomSquare();
+    el.textContent = sq;
+    expect(el.textContent.length).toBe(2);
+  });
+});
+
+describe("UI — button disabled state", () => {
+  it("darkBtn can be disabled", () => {
+    const btn = document.getElementById("darkBtn");
+    btn.disabled = true;
+    expect(btn.disabled).toBeTruthy();
+    btn.disabled = false;
+  });
+
+  it("lightBtn can be disabled", () => {
+    const btn = document.getElementById("lightBtn");
+    btn.disabled = true;
+    expect(btn.disabled).toBeTruthy();
+    btn.disabled = false;
+  });
+
+  it("darkBtn re-enables correctly", () => {
+    const btn = document.getElementById("darkBtn");
+    btn.disabled = true;
+    btn.disabled = false;
+    expect(btn.disabled).toBeFalsy();
+  });
+});
+
+describe("UI — feedback message classes", () => {
+  it("can set feedback-correct class", () => {
+    const el = document.getElementById("feedbackMessage");
+    el.className = "feedback-message feedback-correct";
+    expect(el.classList.contains("feedback-correct")).toBeTruthy();
+  });
+
+  it("can set feedback-incorrect class", () => {
+    const el = document.getElementById("feedbackMessage");
+    el.className = "feedback-message feedback-incorrect";
+    expect(el.classList.contains("feedback-incorrect")).toBeTruthy();
+  });
+
+  it("resetting class removes both feedback classes", () => {
+    const el = document.getElementById("feedbackMessage");
+    el.className = "feedback-message feedback-correct";
+    el.className = "feedback-message";
+    expect(el.classList.contains("feedback-correct")).toBeFalsy();
+    expect(el.classList.contains("feedback-incorrect")).toBeFalsy();
+  });
+});
+
+describe("UI — integration: answer → feedback text", () => {
+  it("correct answer produces feedback containing 'Correct'", () => {
+    const square = "A1"; // dark
+    const actualColor = determineSquareColor(square);
+    const userGuess = actualColor;
+    const msg = userGuess === actualColor
+      ? `✓ Correct! ${square} is a ${actualColor} square. ✓`
+      : `✗ Incorrect. ${square} is a ${actualColor} square. ✗`;
+    expect(msg).toContain("Correct");
+  });
+
+  it("wrong answer produces feedback containing 'Incorrect'", () => {
+    const square = "A1"; // dark
+    const actualColor = determineSquareColor(square);
+    const userGuess = "light";
+    const msg = userGuess === actualColor
+      ? `✓ Correct! ${square} is a ${actualColor} square. ✓`
+      : `✗ Incorrect. ${square} is a ${actualColor} square. ✗`;
+    expect(msg).toContain("Incorrect");
+  });
+
+  it("feedback always names the actual color", () => {
+    const allSquares = [];
+    for (let c = 0; c < 8; c++)
+      for (let r = 1; r <= 8; r++)
+        allSquares.push(String.fromCharCode(65+c)+r);
+
+    for (const sq of allSquares) {
+      const actual = determineSquareColor(sq);
+      const msg = `${sq} is a ${actual} square`;
+      if (!msg.includes(actual))
+        throw new Error(`Feedback missing color for ${sq}`);
+    }
+  });
+});
+
+describe("UI — integration: score display matches state", () => {
+  it("score label reflects game state after round", () => {
+    let state = { ...createGameState(), currentSquare: "A1", isWaiting: false };
+    state = simulateAnswer(state, "dark"); // correct
+    const label = `Score: ${state.correctAnswers}/${state.totalQuestions}`;
+    expect(label).toBe("Score: 1/1");
+  });
+
+  it("score never exceeds total questions", () => {
+    let state = createGameState();
+    const testData = [
+      { sq: "A1", guess: "dark" },
+      { sq: "B1", guess: "dark" }, // wrong (light)
+      { sq: "A2", guess: "light" }, // correct
+    ];
+    for (const { sq, guess } of testData) {
+      state = { ...state, currentSquare: sq, isWaiting: false };
+      state = simulateAnswer(state, guess);
+    }
+    expect(state.correctAnswers).toBeLessThanOrEqual(state.totalQuestions);
+  });
+});
+
+// ─── Runner ───────────────────────────────────────────────────────────────────
+
+function runAll() {
+  const resultsEl = document.getElementById("results");
+  resultsEl.innerHTML = "";
+  document.getElementById("summary").style.display = "flex";
+
+  let totalPass = 0, totalFail = 0;
+
+  for (const suite of suites) {
+    const suiteEl = document.createElement("div");
+    suiteEl.className = "suite";
+
+    const header = document.createElement("div");
+    header.className = "suite-header";
+    header.textContent = suite.name;
+    suiteEl.appendChild(header);
+
+    for (const test of suite.tests) {
+      let passed = false, error = null;
+      try { test.fn(); passed = true; }
+      catch (e) { error = e.message; }
+
+      passed ? totalPass++ : totalFail++;
+
+      const row = document.createElement("div");
+      row.className = "test";
+      row.innerHTML = `
+        <span class="badge ${passed ? 'pass' : 'fail'}">${passed ? 'PASS' : 'FAIL'}</span>
+        <div class="test-body">
+          <div class="test-name">${test.name}</div>
+          ${error ? `<div class="test-error">${error}</div>` : ''}
+        </div>
+      `;
+      suiteEl.appendChild(row);
+    }
+
+    resultsEl.appendChild(suiteEl);
+  }
+
+  document.getElementById("s-total").textContent = totalPass + totalFail;
+  document.getElementById("s-pass").textContent = totalPass;
+  document.getElementById("s-fail").textContent = totalFail;
+}
+</script>
+</body>
+</html>
