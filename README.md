@@ -19,6 +19,9 @@ Chess notation requires knowing square colors quickly. This trainer helps build 
 - CSS3 (responsive, mobile-first)
 - Vanilla JavaScript
 
+## 🔎 Tests
+- Open `tests/index.html` in any browser and click **▶ Run All Tests**.
+
 ## 📱 Play Anywhere
 
 Works on:
