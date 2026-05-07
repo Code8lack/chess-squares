@@ -138,6 +138,11 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
+.dark-btn:hover {
+    border:1px solid white;
+    margin-left: 2px;
+}
+
 .dark-btn:active:not(.disabled) {
     background-color: #3F5F5F;
 }
@@ -146,6 +151,11 @@ body {
     background-color: #FFFFFF;
     color: #333333;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.light-btn:hover {
+    border:1px solid black;
+    margin-right: 2px;
 }
 
 .light-btn:active:not(.disabled) {
@@ -226,4 +236,5 @@ body {
         padding: 12px;
         font-size: 1rem;
     }
+
 }
