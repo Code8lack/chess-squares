@@ -84,7 +84,7 @@ body {
     font-size: 4rem;
     font-weight: bold;
     color: #333333;
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255, 255, 255, 0.5);
     padding: 20px;
     border-radius: 8px;
     border:1px solid #333;
@@ -120,6 +120,7 @@ body {
     transition: all 0.2s ease;
     text-align: center;
     font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .chess-btn:active {
@@ -127,20 +128,23 @@ body {
 }
 
 .chess-btn.disabled {
-    opacity: 0.6;
     cursor: not-allowed;
     transform: none;
+}
+
+.chess-btn:focus-visible {
+    outline: 2px solid #FFD700;
 }
 
 .dark-btn {
     background-color: #2F4F4F;
     color: #E0E0E0;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid transparent;
 }
 
-.dark-btn:hover {
-    border:1px solid white;
-    margin-left: 2px;
+.chess-btn:hover {
+    background: rgba(70, 50, 225, 0.6);
 }
 
 .dark-btn:active:not(.disabled) {
@@ -150,12 +154,8 @@ body {
 .light-btn {
     background-color: #FFFFFF;
     color: #333333;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.light-btn:hover {
-    border:1px solid black;
-    margin-right: 2px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid transparent;
 }
 
 .light-btn:active:not(.disabled) {
@@ -181,7 +181,8 @@ body {
 }
 
 .feedback-incorrect {
-    color: #c94953;
+    color: #c00;
+    opacity: 1 !important;
 }
 
 .image-area {
@@ -228,6 +229,8 @@ body {
 
 @media (max-width: 380px) {
     .button-container {
+        position: absolute;
+        top:0;
         gap: 10px;
     }
     
