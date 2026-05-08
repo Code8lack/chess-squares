@@ -34,43 +34,47 @@
             <div class="feedback-message" id="feedbackMessage">Tap DARK or LIGHT to begin</div>
         </div>
 
-        <div class="image-area">
-            <svg class="chessboard-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <rect width="200" height="200" fill="#FFFFFF"/>
-                <rect x="0" y="0" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="50" y="0" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="100" y="0" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="150" y="0" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="25" y="25" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="75" y="25" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="125" y="25" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="175" y="25" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="0" y="50" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="50" y="50" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="100" y="50" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="150" y="50" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="25" y="75" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="75" y="75" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="125" y="75" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="175" y="75" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="0" y="100" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="50" y="100" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="100" y="100" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="150" y="100" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="25" y="125" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="75" y="125" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="125" y="125" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="175" y="125" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="0" y="150" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="50" y="150" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="100" y="150" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="150" y="150" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="25" y="175" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="75" y="175" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="125" y="175" width="25" height="25" fill="#2F4F4F"/>
-                <rect x="175" y="175" width="25" height="25" fill="#2F4F4F"/>
-            </svg>
-            <div class="image-caption">Chessboard reference</div>
+            <div class="image-area" id="toggleArea">
+                <svg class="chessboard-svg" id="boardSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="200" height="200" fill="#FFFFFF"/>
+                    <rect x="0" y="0" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="50" y="0" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="100" y="0" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="150" y="0" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="25" y="25" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="75" y="25" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="125" y="25" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="175" y="25" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="0" y="50" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="50" y="50" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="100" y="50" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="150" y="50" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="25" y="75" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="75" y="75" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="125" y="75" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="175" y="75" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="0" y="100" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="50" y="100" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="100" y="100" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="150" y="100" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="25" y="125" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="75" y="125" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="125" y="125" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="175" y="125" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="0" y="150" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="50" y="150" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="100" y="150" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="150" y="150" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="25" y="175" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="75" y="175" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="125" y="175" width="25" height="25" fill="#2F4F4F"/>
+                    <rect x="175" y="175" width="25" height="25" fill="#2F4F4F"/>
+                </svg>
+                
+                <img src="assets/stallion.png" id="knightImg" class="chessboard-svg" style="display: none;" alt="Knight">
+                
+                <div class="image-caption" id="imageCaption">Chessboard reference</div>
+            </div>
         </div>
     </div>
 

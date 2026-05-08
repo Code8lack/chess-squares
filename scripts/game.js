@@ -11,6 +11,30 @@ const feedbackMessageEl = document.getElementById('feedbackMessage');
 const darkBtn = document.getElementById('darkBtn');
 const lightBtn = document.getElementById('lightBtn');
 
+// Toggle Logic for Pro Mode
+const toggleArea = document.getElementById('toggleArea');
+const boardSvg = document.getElementById('boardSvg');
+const knightImg = document.getElementById('knightImg');
+const imageCaption = document.getElementById('imageCaption');
+
+toggleArea.addEventListener('click', () => {
+    // Check if the board is currently visible
+    const isBoardVisible = boardSvg.style.display !== 'none';
+
+    if (isBoardVisible) {
+        // Switch to Pro Mode
+        boardSvg.style.display = 'none';
+        knightImg.style.display = 'block';
+        imageCaption.textContent = 'Pro Mode';
+        console.log("Pro Mode Activated ♞");
+    } else {
+        // Switch back to Reference Mode
+        boardSvg.style.display = 'block';
+        knightImg.style.display = 'none';
+        imageCaption.textContent = 'Chessboard reference';
+    }
+});
+
 // Determine if a chess square is dark or light
 function determineSquareColor(squareName) {
     const columnChar = squareName.charAt(0).toUpperCase();
