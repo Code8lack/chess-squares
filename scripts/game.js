@@ -25,13 +25,13 @@ toggleArea.addEventListener('click', () => {
         // Switch to Pro Mode
         boardSvg.style.display = 'none';
         knightImg.style.display = 'block';
-        imageCaption.textContent = 'Pro Mode';
-        console.log("Pro Mode Activated ♞");
+        imageCaption.textContent = 'Grandmaster Mode';
+        console.log("Grandmaster Mode");
     } else {
         // Switch back to Reference Mode
         boardSvg.style.display = 'block';
         knightImg.style.display = 'none';
-        imageCaption.textContent = 'Chessboard reference';
+        imageCaption.textContent = 'Beginner Mode';
     }
 });
 
