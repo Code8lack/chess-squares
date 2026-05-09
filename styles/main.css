@@ -85,7 +85,7 @@ body {
     font-size: 4rem;
     font-weight: bold;
     color: #333333;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: skyblue;
     padding: 20px;
     border-radius: 8px;
     border:1px solid #333;
@@ -111,12 +111,12 @@ body {
 
 .chess-btn {
     flex: 1;
-    min-width: 120px;
+    max-width: 190px;
     padding: 20px;
     font-size: 1.5rem;
     font-weight: bold;
     border: 3px solid transparent;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: center;
