@@ -95,9 +95,18 @@ function checkAnswer(userGuess) {
         feedbackMessageEl.innerHTML = `✓ Correct! ${currentSquare} is a ${actualColor} square. ✓`;
         feedbackMessageEl.className = "feedback-message feedback-correct";
         correctAnswers++;
+<<<<<<< Updated upstream
     } else {
         feedbackMessageEl.innerHTML = `✗ Incorrect. ${currentSquare} is a ${actualColor} square. ✗`;
         feedbackMessageEl.className = "feedback-message feedback-incorrect";
+=======
+        
+ 
+    } else {
+        feedbackMessageEl.innerHTML = `✗ Incorrect. ${currentSquare} is a ${actualColor} square. ✗`;
+        feedbackMessageEl.className = "feedback-message feedback-incorrect";
+        
+>>>>>>> Stashed changes
     }
     
     updateScoreDisplay();
