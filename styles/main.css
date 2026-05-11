@@ -199,6 +199,7 @@ body {
     display: block;
     border-radius: 2px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    cursor: pointer; /* Makes it look clickable */
 }
 
 .image-caption {
@@ -211,13 +212,10 @@ body {
     padding: 20px;
     text-align: center;
     border-top: 2px solid rgba(0,0,0,0.1);
-    cursor: pointer; /* Makes it look clickable */
     transition: background-color 0.2s ease;
 }
 
-.image-area:hover {
-    background-color: rgba(255, 255, 255, 0.05); /* Subtle hint on hover */
-}
+
 
 /* Ensure the knight image scales the same way as the SVG */
 #knightImg {

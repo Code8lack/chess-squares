@@ -17,23 +17,24 @@ const boardSvg = document.getElementById('boardSvg');
 const knightImg = document.getElementById('knightImg');
 const imageCaption = document.getElementById('imageCaption');
 
-toggleArea.addEventListener('click', () => {
-    // Check if the board is currently visible
+function toggleMode() {
     const isBoardVisible = boardSvg.style.display !== 'none';
 
     if (isBoardVisible) {
-        // Switch to Pro Mode
+        // Switch to Grandmaster Mode
         boardSvg.style.display = 'none';
         knightImg.style.display = 'block';
         imageCaption.textContent = 'Grandmaster Mode';
-        console.log("Grandmaster Mode");
     } else {
-        // Switch back to Reference Mode
+        // Switch back to Beginner Mode
         boardSvg.style.display = 'block';
         knightImg.style.display = 'none';
         imageCaption.textContent = 'Beginner Mode';
     }
-});
+}
+
+boardSvg.addEventListener('click', toggleMode);
+knightImg.addEventListener('click', toggleMode);
 
 // Determine if a chess square is dark or light
 function determineSquareColor(squareName) {
