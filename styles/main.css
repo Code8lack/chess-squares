@@ -216,6 +216,7 @@ body {
 }
 
 
+
 /* Ensure the knight image scales the same way as the SVG */
 #knightImg {
     object-fit: contain;
