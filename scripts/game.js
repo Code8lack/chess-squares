@@ -17,6 +17,8 @@ const boardSvg = document.getElementById('boardSvg');
 const knightImg = document.getElementById('knightImg');
 const imageCaption = document.getElementById('imageCaption');
 
+const clickSound = document.getElementById('clickSound');
+
 function toggleMode() {
     const isBoardVisible = boardSvg.style.display !== 'none';
 
@@ -88,17 +90,13 @@ function askNewQuestion() {
 function checkAnswer(userGuess) {
     if (isWaiting) return;
     
+    // Play click sound immediately
+    clickSound.currentTime = 0;
+    clickSound.play().catch(() => {}); // ignore browser autoplay blocks
+
     const actualColor = determineSquareColor(currentSquare);
     totalQuestions++;
     
-    if (userGuess === actualColor) {
-        feedbackMessageEl.innerHTML = `✓ Correct! ${currentSquare} is a ${actualColor} square. ✓`;
-        feedbackMessageEl.className = "feedback-message feedback-correct";
-        correctAnswers++;
-    } else {
-        feedbackMessageEl.innerHTML = `✗ Incorrect. ${currentSquare} is a ${actualColor} square. ✗`;
-        feedbackMessageEl.className = "feedback-message feedback-incorrect";
-    }
     
     updateScoreDisplay();
     setButtonsEnabled(false);
