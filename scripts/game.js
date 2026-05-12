@@ -92,7 +92,7 @@ function checkAnswer(userGuess) {
     
     // Play click sound immediately
     //clickSound.currentTime = 0;
-    //clickSound.play().catch(() => {}); // ignore browser autoplay blocks
+    clickSound.play().catch(() => {}); // ignore browser autoplay blocks
 
     const actualColor = determineSquareColor(currentSquare);
     totalQuestions++;
@@ -105,7 +105,7 @@ if (userGuess === actualColor) {
         feedbackMessageEl.innerHTML = `✗ Incorrect. ${currentSquare} is a ${actualColor} square. ✗`;
         feedbackMessageEl.className = "feedback-message feedback-incorrect";
     }
-        
+
     updateScoreDisplay();
     setButtonsEnabled(false);
     isWaiting = true;
