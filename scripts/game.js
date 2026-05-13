@@ -20,7 +20,7 @@ const imageCaption = document.getElementById('imageCaption');
 const clickSound = document.getElementById('clickSound');
 
 function toggleMode() {
-    clickSound.play().catch(() => {});
+    levelSound.play().catch(() => {});
     const isBoardVisible = boardSvg.style.display !== 'none';
 
     if (isBoardVisible) {
