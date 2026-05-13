@@ -248,8 +248,6 @@ body {
 
 @media (max-width: 380px) {
     .button-container {
-        position: absolute;
-        top:0;
         gap: 10px;
     }
     
