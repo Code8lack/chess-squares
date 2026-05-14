@@ -50,7 +50,16 @@ function toggleMode() {
 }
 
 function selectPlayer(name) {
-    saveCurrentPlayer(); // flush outgoing player first
+    if (totalQuestions > 0) {
+        if (!confirm(`Save current game and start fresh as ${name}?`)) return;
+        saveSession();
+    }
+    saveCurrentPlayer(); // flush outgoing player
+    // zero out the outgoing player's live score in storage
+    if (currentPlayer) {
+        players[currentPlayer] = { correct: 0, total: 0 };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
+    }
     currentPlayer = name;
     if (!players[name]) players[name] = { correct: 0, total: 0 };
     correctAnswers = players[name].correct;
@@ -86,6 +95,10 @@ function renderPlayerList() {
     guestRow.innerHTML = `<span class="player-name">👤 Guest</span>
                           <span class="player-score">—</span>`;
     guestRow.onclick = () => {
+        if (totalQuestions > 0) {
+            if (!confirm('Save current game and switch to Guest?')) return;
+            saveSession();
+        }
         saveCurrentPlayer();
         currentPlayer = null;
         correctAnswers = 0;
