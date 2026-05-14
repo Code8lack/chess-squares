@@ -26,7 +26,7 @@ let players = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
 let currentPlayer = null;
 const savedPlayer = localStorage.getItem('chessSquares_currentPlayer');
 if (savedPlayer && players[savedPlayer]) selectPlayer(savedPlayer);
-
+const HISTORY_KEY = 'chessSquares_history';
 
 function toggleMode() {
     levelSound.play().catch(() => {});
@@ -119,6 +119,34 @@ function generateRandomSquare() {
     const columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
     const rows = ['1', '2', '3', '4', '5', '6', '7', '8'];
     return columns[Math.floor(Math.random() * 8)] + rows[Math.floor(Math.random() * 8)];
+}
+
+function saveSession() {
+    if (!currentPlayer || totalQuestions === 0) return false;
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    history.push({
+        player: currentPlayer,
+        correct: correctAnswers,
+        total: totalQuestions,
+        pct: Math.round(correctAnswers / totalQuestions * 100),
+        duration: null, // reserved for timed mode
+        date: new Date().toISOString()
+    });
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    return true;
+}
+
+function newGame() {
+    if (totalQuestions === 0) {
+        alert('No questions answered yet!');
+        return;
+    }
+    saveSession();
+    correctAnswers = 0;
+    totalQuestions = 0;
+    saveCurrentPlayer();
+    updateScoreDisplay();
+    askNewQuestion();
 }
 
 // Update score display

@@ -145,7 +145,7 @@ body {
 }
 
 .chess-btn:hover,
-    #playerBtn:hover {
+    .settingsColumn button:hover {
     background: rgba(70, 50, 225, 0.6);
 }
 
@@ -265,16 +265,14 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    border: 1px solid #333;
-    border-radius: 6px;
+    gap: 10px;
     float:left;
     left: 25px;
     width: 150px;
 }
 
 
-#playerBtn {
+.settingsColumn button {
     background-color: floralwhite;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     border: 1px solid #333;
