@@ -144,7 +144,8 @@ body {
     border: 1px solid transparent;
 }
 
-.chess-btn:hover {
+.chess-btn:hover,
+    #playerBtn:hover {
     background: rgba(70, 50, 225, 0.6);
 }
 
@@ -275,6 +276,7 @@ body {
 
 #playerBtn {
     background-color: floralwhite;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     border: 1px solid #333;
     border-radius: 6px;
     font-size: 15px;
