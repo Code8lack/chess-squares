@@ -80,6 +80,23 @@ function closePlayerPanel() {
 function renderPlayerList() {
     const list = document.getElementById('playerList');
     list.innerHTML = '';
+
+    const guestRow = document.createElement('div');
+    guestRow.className = 'player-row' + (!currentPlayer ? ' active' : '');
+    guestRow.innerHTML = `<span class="player-name">👤 Guest</span>
+                          <span class="player-score">—</span>`;
+    guestRow.onclick = () => {
+        saveCurrentPlayer();
+        currentPlayer = null;
+        correctAnswers = 0;
+        totalQuestions = 0;
+        document.getElementById('playerBtn').textContent = '👤 Guest';
+        localStorage.removeItem('chessSquares_currentPlayer');
+        updateScoreDisplay();
+        closePlayerPanel();
+    };
+    list.appendChild(guestRow);
+
     for (const name in players) {
         const p = players[name];
         const pct = p.total ? Math.round(p.correct / p.total * 100) : 0;
