@@ -168,7 +168,7 @@ body {
     padding: 20px;
     text-align: center;
     min-height: 100px;
-    width: 450px;
+    width: 100%;
     margin:0 auto;
 }
 
@@ -178,6 +178,7 @@ body {
     padding: 15px;
     border-radius: 15px;
     background-color: rgba(0,0,0,0.1);
+    max-width: 100%;
 }
 
 .feedback-correct {
@@ -269,6 +270,7 @@ body {
     float:left;
     left: 25px;
     width: 150px;
+    margin-bottom: 25px;
 }
 
 
