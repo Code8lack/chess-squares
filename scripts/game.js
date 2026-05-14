@@ -3,6 +3,10 @@ let currentSquare = "";
 let correctAnswers = 0;
 let totalQuestions = 0;
 let isWaiting = false;
+let timerDuration = 0;
+let timerRemaining = 0;
+let timerInterval = null;
+
 
 // DOM elements
 const squareNameEl = document.getElementById('squareName');
@@ -150,7 +154,7 @@ function saveSession() {
         correct: correctAnswers,
         total: totalQuestions,
         pct: Math.round(correctAnswers / totalQuestions * 100),
-        duration: null, // reserved for timed mode
+        duration: timerDuration > 0 ? timerDuration - timerRemaining : null,
         date: new Date().toISOString()
     });
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
@@ -165,14 +169,22 @@ function newGame() {
     saveSession();
     correctAnswers = 0;
     totalQuestions = 0;
+    clearInterval(timerInterval);
+    timerInterval = null;
+    if (timerDuration > 0) {
+        timerRemaining = timerDuration;
+        tickTimer();
+        timerInterval = setInterval(tickTimer, 1000);
+    }
     saveCurrentPlayer();
     updateScoreDisplay();
     askNewQuestion();
 }
 
-// Update score display
+
 function updateScoreDisplay() {
-    scoreLabelEl.textContent = `Score: ${correctAnswers}/${totalQuestions}`;
+    const timer = timerDuration > 0 ? `\n${formatTime(timerRemaining)}` : '';
+    scoreLabelEl.textContent = `Score: ${correctAnswers}/${totalQuestions}${timer}`;
 }
 
 // Enable/disable buttons
@@ -231,6 +243,55 @@ if (userGuess === actualColor) {
     setTimeout(() => {
         askNewQuestion();
     }, 1000);
+}
+
+function openTimerPanel() {
+    document.getElementById('timerOverlay').style.display = 'flex';
+}
+
+function closeTimerOverlay() {
+    document.getElementById('timerOverlay').style.display = 'none';
+    document.getElementById('timerMinutes').value = '';
+}
+
+function startTimer() {
+    const mins = parseInt(document.getElementById('timerMinutes').value);
+    if (!mins || mins < 1) return;
+    clearInterval(timerInterval);
+    timerDuration = mins * 60;
+    timerRemaining = timerDuration;
+    closeTimerOverlay();
+    tickTimer();
+    timerInterval = setInterval(tickTimer, 1000);
+}
+
+function tickTimer() {
+    if (timerRemaining <= 0) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        setButtonsEnabled(false);
+        feedbackMessageEl.textContent = "⏰ Time's Up!";
+        feedbackMessageEl.className = "feedback-message feedback-incorrect";
+        updateScoreDisplay();
+        return;
+    }
+    timerRemaining--;
+    updateScoreDisplay();
+}
+
+function clearTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerDuration = 0;
+    timerRemaining = 0;
+    updateScoreDisplay();
+    closeTimerOverlay();
+}
+
+function formatTime(seconds) {
+    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const s = (seconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
 }
 
 // Event listeners

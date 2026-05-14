@@ -38,6 +38,7 @@
                 <div class="settingsColumn">
                     <button id="playerBtn" onclick="openPlayerPanel()">👤 Guest</button>
                     <button id="newGameBtn" onclick="newGame()">NEW GAME</button>
+                    <button id="timerBtn" onclick="openTimerPanel()">TIMER</button>
                 </div>
                 <svg class="chessboard-svg" id="boardSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                     <rect width="200" height="200" fill="#FFFFFF"/>
@@ -89,6 +90,18 @@
                       <button onclick="addPlayer()">Add</button>
                     </div>
                     <button id="closePanel" onclick="closePlayerPanel()">✕</button>
+                  </div>
+                </div>
+
+                <div id="timerOverlay" style="display:none">
+                  <div id="timerPanel">
+                    <h2>Set Timer</h2>
+                    <div id="timerInputRow">
+                      <input id="timerMinutes" type="number" min="1" max="60" placeholder="minutes">
+                      <button onclick="startTimer()">Start</button>
+                    </div>
+                    <button id="noTimerBtn" onclick="clearTimer()">No Timer</button>
+                    <button id="closeTimerPanel" onclick="closeTimerOverlay()">✕</button>
                   </div>
                 </div>
             </div>
