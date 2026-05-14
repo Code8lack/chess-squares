@@ -246,6 +246,7 @@ if (userGuess === actualColor) {
 }
 
 function openTimerPanel() {
+    document.getElementById('timerMinutes').value = 1;
     document.getElementById('timerOverlay').style.display = 'flex';
 }
 
