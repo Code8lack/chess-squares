@@ -84,6 +84,15 @@ function renderPlayerList() {
         row.innerHTML = `<span class="player-name">${name}</span>
                          <span class="player-score">${p.correct}/${p.total} (${pct}%)</span>`;
         row.onclick = () => selectPlayer(name);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-player-btn';
+        deleteBtn.textContent = '✕';
+        deleteBtn.onclick = (e) => {
+            e.stopPropagation();
+            deletePlayer(name);
+        };
+        row.appendChild(deleteBtn);
         list.appendChild(row);
     }
 }
@@ -97,11 +106,23 @@ function addPlayer() {
     selectPlayer(name);
 }
 
+function deletePlayer(name) {
+    if (!confirm(`Delete ${name}?`)) return;
+    delete players[name];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
+    if (currentPlayer === name) {
+        currentPlayer = null;
+        correctAnswers = 0;
+        totalQuestions = 0;
+        document.getElementById('playerBtn').textContent = '👤 Guest';
+        updateScoreDisplay();
+    }
+    renderPlayerList();
+}
+
 // Allow Enter key in the input
 document.getElementById('newPlayerInput')
     .addEventListener('keydown', e => { if (e.key === 'Enter') addPlayer(); });
-
-
 
 boardSvg.addEventListener('click', toggleMode);
 knightImg.addEventListener('click', toggleMode);

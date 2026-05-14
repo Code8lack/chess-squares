@@ -344,6 +344,18 @@ body {
     margin-top: 4px;
 }
 
+.delete-player-btn {
+    background: none;
+    border: none;
+    color: indianred;
+    font-size: 1rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 0 0 8px;
+}
+
+.delete-player-btn:hover { color: #ff6b6b; }
+
 #newPlayerInput {
     flex: 1;
     background: rgba(255,255,255,0.08);
