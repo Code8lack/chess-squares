@@ -262,14 +262,44 @@ if (userGuess === actualColor) {
     }, 1000);
 }
 
-function openTimerPanel() {
+function openSettingsPanel() {
     document.getElementById('timerMinutes').value = 1;
-    document.getElementById('timerOverlay').style.display = 'flex';
+    renderHistory();
+    document.getElementById('settingsOverlay').style.display = 'flex';
 }
 
-function closeTimerOverlay() {
-    document.getElementById('timerOverlay').style.display = 'none';
-    document.getElementById('timerMinutes').value = '';
+function closeSettingsOverlay() {
+    document.getElementById('settingsOverlay').style.display = 'none';
+}
+
+function renderHistory() {
+    const list = document.getElementById('historyList');
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]').reverse();
+    if (history.length === 0) {
+        list.innerHTML = '<p class="no-history">No sessions yet.</p>';
+        return;
+    }
+    list.innerHTML = '';
+    for (const s of history) {
+        const date = new Date(s.date).toLocaleDateString('en-GB', {
+            day: 'numeric', month: 'short', year: 'numeric',
+            hour: '2-digit', minute: '2-digit'
+        });
+        const duration = s.duration ? formatTime(s.duration) : '—';
+        const row = document.createElement('div');
+        row.className = 'history-row';
+        row.innerHTML = `<span class="history-player">${s.player}</span>
+                         <span class="history-score">${s.correct}/${s.total} (${s.pct}%)</span>
+                         <span class="history-duration">${duration}</span>
+                         <span class="history-date">${date}</span>`;
+        list.appendChild(row);
+    }
+}
+
+function clearHistory() {
+    if (!confirm('Clear all history?')) return;
+    localStorage.removeItem(HISTORY_KEY);
+    renderHistory();
 }
 
 function startTimer() {
@@ -278,9 +308,18 @@ function startTimer() {
     clearInterval(timerInterval);
     timerDuration = mins * 60;
     timerRemaining = timerDuration;
-    closeTimerOverlay();
+    closeSettingsOverlay();
     tickTimer();
     timerInterval = setInterval(tickTimer, 1000);
+}
+
+function clearTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerDuration = 0;
+    timerRemaining = 0;
+    updateScoreDisplay();
+    closeSettingsOverlay();
 }
 
 function tickTimer() {
@@ -295,15 +334,6 @@ function tickTimer() {
     }
     timerRemaining--;
     updateScoreDisplay();
-}
-
-function clearTimer() {
-    clearInterval(timerInterval);
-    timerInterval = null;
-    timerDuration = 0;
-    timerRemaining = 0;
-    updateScoreDisplay();
-    closeTimerOverlay();
 }
 
 function formatTime(seconds) {

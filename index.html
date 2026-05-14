@@ -38,7 +38,7 @@
                 <div class="settingsColumn">
                     <button id="playerBtn" onclick="openPlayerPanel()">👤 Guest</button>
                     <button id="newGameBtn" onclick="newGame()">NEW GAME</button>
-                    <button id="timerBtn" onclick="openTimerPanel()">TIMER</button>
+                    <button id="settingsBtn" onclick="openSettingsPanel()">⚙️ SETTINGS</button>
                 </div>
                 <svg class="chessboard-svg" id="boardSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                     <rect width="200" height="200" fill="#FFFFFF"/>
@@ -93,15 +93,26 @@
                   </div>
                 </div>
 
-                <div id="timerOverlay" style="display:none">
-                  <div id="timerPanel">
-                    <h2>Set Timer</h2>
-                    <div id="timerInputRow">
-                      <input id="timerMinutes" type="number" min="1" max="60" placeholder="minutes">
-                      <button onclick="startTimer()">Start</button>
+                <div id="settingsOverlay" style="display:none">
+                  <div id="settingsPanel">
+                    <h2>Settings</h2>
+
+                    <div class="settings-section">
+                      <h3>Timer</h3>
+                      <div id="timerInputRow">
+                        <input id="timerMinutes" type="number" min="1" max="60" placeholder="minutes">
+                        <button onclick="startTimer()">Start</button>
+                      </div>
+                      <button id="noTimerBtn" onclick="clearTimer()">No Timer</button>
                     </div>
-                    <button id="noTimerBtn" onclick="clearTimer()">No Timer</button>
-                    <button id="closeTimerPanel" onclick="closeTimerOverlay()">✕</button>
+
+                    <div class="settings-section">
+                      <h3>History</h3>
+                      <div id="historyList"></div>
+                      <button id="clearHistoryBtn" onclick="clearHistory()">Clear History</button>
+                    </div>
+
+                    <button id="closeSettingsPanel" onclick="closeSettingsOverlay()">✕</button>
                   </div>
                 </div>
             </div>
