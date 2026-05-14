@@ -153,7 +153,7 @@ body {
 }
 
 .light-btn {
-    background-color: #FFFFFF;
+    background-color: floralwhite;
     color: #333333;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     border: 1px solid transparent;
@@ -167,6 +167,8 @@ body {
     padding: 20px;
     text-align: center;
     min-height: 100px;
+    width: 450px;
+    margin:0 auto;
 }
 
 .feedback-message {
@@ -189,7 +191,7 @@ body {
 .image-area {
     padding: 20px;
     text-align: center;
-    border-top: 2px solid rgba(0,0,0,0.1);
+    border-top: 2px solid rgba(150,0,0,0.1);
 }
 
 .chessboard-svg {
@@ -214,8 +216,6 @@ body {
     border-top: 2px solid rgba(0,0,0,0.1);
     transition: background-color 0.2s ease;
 }
-
-
 
 /* Ensure the knight image scales the same way as the SVG */
 #knightImg {
@@ -259,7 +259,33 @@ body {
 
 }
 
-/* ================================= PLAYER ================================== */
+
+.settingsColumn {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    float:left;
+    left: 25px;
+    width: 150px;
+}
+
+
+#playerBtn {
+    background-color: floralwhite;
+    border: 1px solid #333;
+    border-radius: 6px;
+    font-size: 15px;
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+}
+
+
+
+/* ================================= PLAYER PANEL OVERLAY ================================== */
 
 #playerOverlay {
     position: fixed;
