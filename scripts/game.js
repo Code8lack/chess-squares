@@ -17,7 +17,16 @@ const boardSvg = document.getElementById('boardSvg');
 const knightImg = document.getElementById('knightImg');
 const imageCaption = document.getElementById('imageCaption');
 
+//Sound
 const clickSound = document.getElementById('clickSound');
+
+// Player state
+const STORAGE_KEY = 'chessSquares_players';
+let players = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+let currentPlayer = null;
+const savedPlayer = localStorage.getItem('chessSquares_currentPlayer');
+if (savedPlayer && players[savedPlayer]) selectPlayer(savedPlayer);
+
 
 function toggleMode() {
     levelSound.play().catch(() => {});
@@ -35,6 +44,64 @@ function toggleMode() {
         imageCaption.textContent = 'Beginner Mode';
     }
 }
+
+function selectPlayer(name) {
+    saveCurrentPlayer(); // flush outgoing player first
+    currentPlayer = name;
+    if (!players[name]) players[name] = { correct: 0, total: 0 };
+    correctAnswers = players[name].correct;
+    totalQuestions = players[name].total;
+    updateScoreDisplay();
+    document.getElementById('playerBtn').textContent = '👤 ' + name;
+    localStorage.setItem('chessSquares_currentPlayer', name);
+    closePlayerPanel();
+}
+
+function saveCurrentPlayer() {
+    if (!currentPlayer) return;
+    players[currentPlayer] = { correct: correctAnswers, total: totalQuestions };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
+}
+
+function openPlayerPanel() {
+    renderPlayerList();
+    document.getElementById('playerOverlay').style.display = 'flex';
+}
+
+function closePlayerPanel() {
+    document.getElementById('playerOverlay').style.display = 'none';
+    document.getElementById('newPlayerInput').value = '';
+}
+
+function renderPlayerList() {
+    const list = document.getElementById('playerList');
+    list.innerHTML = '';
+    for (const name in players) {
+        const p = players[name];
+        const pct = p.total ? Math.round(p.correct / p.total * 100) : 0;
+        const row = document.createElement('div');
+        row.className = 'player-row' + (name === currentPlayer ? ' active' : '');
+        row.innerHTML = `<span class="player-name">${name}</span>
+                         <span class="player-score">${p.correct}/${p.total} (${pct}%)</span>`;
+        row.onclick = () => selectPlayer(name);
+        list.appendChild(row);
+    }
+}
+
+function addPlayer() {
+    const input = document.getElementById('newPlayerInput');
+    const name = input.value.trim();
+    if (!name || players[name]) return;
+    players[name] = { correct: 0, total: 0 };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
+    selectPlayer(name);
+}
+
+// Allow Enter key in the input
+document.getElementById('newPlayerInput')
+    .addEventListener('keydown', e => { if (e.key === 'Enter') addPlayer(); });
+
+
 
 boardSvg.addEventListener('click', toggleMode);
 knightImg.addEventListener('click', toggleMode);
@@ -108,6 +175,7 @@ if (userGuess === actualColor) {
     }
 
     updateScoreDisplay();
+    saveCurrentPlayer();
     setButtonsEnabled(false);
     isWaiting = true;
     

@@ -258,3 +258,104 @@ body {
     }
 
 }
+
+/* ================================= PLAYER ================================== */
+
+#playerOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#playerPanel {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 24px;
+    min-width: 260px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#playerPanel h2 {
+    color: #fff;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+#playerList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.player-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.player-row:hover { background: rgba(255,255,255,0.14); }
+.player-row.active { background: rgba(76,175,80,0.3); }
+
+.player-row .player-name { color: #fff; font-size: 1rem; }
+.player-row .player-score { color: #aaa; font-size: 0.85rem; }
+
+#addPlayerRow {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+#newPlayerInput {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+#newPlayerInput::placeholder { color: #666; }
+
+#addPlayerRow button {
+    background: #4CAF50;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+#closePanel {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+#closePanel:hover { color: #fff; }
+
+
+
+

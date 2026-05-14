@@ -74,6 +74,20 @@
                 <img src="assets/stallion.png" id="knightImg" class="chessboard-svg" style="display: none;" alt="Knight">
                 
                 <div class="image-caption" id="imageCaption">Beginner Mode</div>
+
+                <button id="playerBtn" onclick="openPlayerPanel()">👤 Guest</button>
+
+                <div id="playerOverlay" style="display:none">
+                  <div id="playerPanel">
+                    <h2>Players</h2>
+                    <div id="playerList"></div>
+                    <div id="addPlayerRow">
+                      <input id="newPlayerInput" type="text" placeholder="New player name" maxlength="20">
+                      <button onclick="addPlayer()">Add</button>
+                    </div>
+                    <button id="closePanel" onclick="closePlayerPanel()">✕</button>
+                  </div>
+                </div>
             </div>
         </div>
     </div>
