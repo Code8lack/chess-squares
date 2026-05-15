@@ -193,7 +193,7 @@ function saveSession() {
 }
 
 function newGame() {
-    const midGame = totalQuestions > 0 && timerInterval !== null;
+    const midGame = totalQuestions > 0;
     if (midGame && !confirm('Start a new game?')) return;
 
     saveSession();
