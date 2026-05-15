@@ -8,7 +8,7 @@
 
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #4CAF50;
+    background-color: #888;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -146,7 +146,7 @@ body {
 
 .chess-btn:hover,
     .settingsColumn button:hover {
-    background: rgba(70, 50, 225, 0.6);
+    background: #2E7DF2;
 }
 
 .dark-btn:active:not(.disabled) {
@@ -269,9 +269,9 @@ body {
     flex-direction: column;
     gap: 10px;
     float:left;
-    left: 25px;
+    left: 40px;
     width: 150px;
-    margin-bottom: 25px;
+    margin: 0 25px 25px 0;
 }
 
 
@@ -279,7 +279,7 @@ body {
     background-color: floralwhite;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     border: 1px solid #333;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 15px;
     width: 100%;
     height: 60px;
@@ -554,7 +554,7 @@ body {
     top: 40px;
     left: 50%;
     transform: translateX(-50%);
-    background: #4CAF50;
+    background: lightgoldenrodyellow;
     color: #000;
     font-weight: bold;
     font-size: 1rem;
