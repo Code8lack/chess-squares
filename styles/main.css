@@ -536,5 +536,41 @@ body {
 #closePanel:hover { color: #fff; }
 
 
+/* =================================== NEW GAME PULSE + TOAST ================================== */
+
+
+@keyframes squarePulse {
+    0%   { background-color: skyblue; }
+    40%  { background-color: #fff; }
+    100% { background-color: skyblue; }
+}
+
+.square-new-game {
+    animation: squarePulse 0.6s ease;
+}
+
+#toast {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4CAF50;
+    color: #000;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 10px 24px;
+    border-radius: 999px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    letter-spacing: 1px;
+}
+
+@keyframes toastIn {
+    0%   { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+    15%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+    70%  { opacity: 1; }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+}
 
 

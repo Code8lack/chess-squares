@@ -6,6 +6,7 @@ let isWaiting = false;
 let timerDuration = 0;
 let timerRemaining = 0;
 let timerInterval = null;
+let nextQuestionTimeout = null;
 
 
 // DOM elements
@@ -50,7 +51,7 @@ function toggleMode() {
 }
 
 function selectPlayer(name) {
-    if (totalQuestions > 0 && timerInterval !== null) {
+    if (totalQuestions > 0) {
         if (!confirm(`Save current game and start fresh as ${name}?`)) return;
         saveSession();
     }
@@ -207,9 +208,25 @@ function newGame() {
     }
     saveCurrentPlayer();
     updateScoreDisplay();
-    askNewQuestion();
+    clearTimeout(nextQuestionTimeout);
+    nextQuestionTimeout = null;
+    askNewQuestion(true);
 }
 
+function showToast(msg = '✦ New Game ✦') {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        toast.style.pointerEvents = 'none';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.animation = 'none';
+    setTimeout(() => {
+        toast.style.animation = 'toastIn 1.6s ease forwards';
+    }, 10);
+}
 
 function updateScoreDisplay() {
     const timer = timerDuration > 0 ? `\n${formatTime(timerRemaining)}` : '';
@@ -232,10 +249,16 @@ function setButtonsEnabled(enabled) {
 }
 
 // Ask a new question
-function askNewQuestion() {
+function askNewQuestion(isNewGame = false) {
     isWaiting = false;
     currentSquare = generateRandomSquare();
     squareNameEl.textContent = currentSquare;
+
+    if (isNewGame) {
+        showToast();
+        squareNameEl.classList.remove('square-new-game');
+        setTimeout(() => squareNameEl.classList.add('square-new-game'), 10);
+    }
     
     feedbackMessageEl.innerHTML = "🤔 Is this a dark or light square?";
     feedbackMessageEl.className = "feedback-message";
@@ -269,7 +292,7 @@ if (userGuess === actualColor) {
     setButtonsEnabled(false);
     isWaiting = true;
     
-    setTimeout(() => {
+    nextQuestionTimeout = setTimeout(() => {
         askNewQuestion();
     }, 1000);
 }
