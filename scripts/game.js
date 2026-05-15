@@ -50,7 +50,7 @@ function toggleMode() {
 }
 
 function selectPlayer(name) {
-    if (totalQuestions > 0) {
+    if (totalQuestions > 0 && timerInterval !== null) {
         if (!confirm(`Save current game and start fresh as ${name}?`)) return;
         saveSession();
     }
@@ -192,10 +192,9 @@ function saveSession() {
 }
 
 function newGame() {
-    if (totalQuestions === 0) {
-        alert('No questions answered yet!');
-        return;
-    }
+    const midGame = totalQuestions > 0 && timerInterval !== null;
+    if (midGame && !confirm('Start a new game?')) return;
+
     saveSession();
     correctAnswers = 0;
     totalQuestions = 0;
