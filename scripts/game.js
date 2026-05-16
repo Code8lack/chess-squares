@@ -201,11 +201,8 @@ function newGame() {
     totalQuestions = 0;
     clearInterval(timerInterval);
     timerInterval = null;
-    if (timerDuration > 0) {
-        timerRemaining = timerDuration;
-        tickTimer();
-        timerInterval = setInterval(tickTimer, 1000);
-    }
+    timerDuration = 0;
+    timerRemaining = 0;
     saveCurrentPlayer();
     updateScoreDisplay();
     clearTimeout(nextQuestionTimeout);
