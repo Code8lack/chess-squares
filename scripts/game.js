@@ -373,10 +373,16 @@ function clearTimer() {
 }
 
 function tickTimer() {
+    timerRemaining--;
     if (timerRemaining <= 0) {
+        timerRemaining = 0;
         clearInterval(timerInterval);
         timerInterval = null;
+        clearTimeout(nextQuestionTimeout);
+        nextQuestionTimeout = null;
+        isWaiting = true;
         setButtonsEnabled(false);
+        saveSession();
         feedbackMessageEl.textContent = "⏰ Time's Up!";
         feedbackMessageEl.className = "feedback-message feedback-incorrect";
         updateScoreDisplay();
