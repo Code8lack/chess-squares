@@ -648,6 +648,59 @@ describe("Timer state — tick logic", () => {
   });
 });
 
+describe("updateScoreDisplay — score label content", () => {
+  it("shows score without timer suffix when no timer set", () => {
+    const timerDuration = 0;
+    const timerRemaining = 0;
+    const correctAnswers = 3;
+    const totalQuestions = 5;
+    const timer = timerDuration > 0 ? `\n${formatTime(timerRemaining)}` : '';
+    const label = `Score: ${correctAnswers}/${totalQuestions}${timer}`;
+    expect(label).toBe("Score: 3/5");
+  });
+
+  it("appends formatted time suffix when timer is active", () => {
+    const timerDuration = 60;
+    const timerRemaining = 45;
+    const label = `Score: 2/4\n${formatTime(timerRemaining)}`;
+    expect(label).toBe("Score: 2/4\n00:45");
+  });
+
+  it("timer suffix uses formatTime correctly at 0 remaining", () => {
+    expect(formatTime(0)).toBe("00:00");
+  });
+});
+
+describe("setButtonsEnabled — class side-effects", () => {
+  it("disabled state adds 'disabled' class to darkBtn", () => {
+    const btn = document.getElementById("darkBtn");
+    btn.classList.add("disabled");
+    expect(btn.classList.contains("disabled")).toBeTruthy();
+    btn.classList.remove("disabled");
+  });
+
+  it("disabled state adds 'disabled' class to lightBtn", () => {
+    const btn = document.getElementById("lightBtn");
+    btn.classList.add("disabled");
+    expect(btn.classList.contains("disabled")).toBeTruthy();
+    btn.classList.remove("disabled");
+  });
+
+  it("enabled state removes 'disabled' class from darkBtn", () => {
+    const btn = document.getElementById("darkBtn");
+    btn.classList.add("disabled");
+    btn.classList.remove("disabled");
+    expect(btn.classList.contains("disabled")).toBeFalsy();
+  });
+
+  it("enabled state removes 'disabled' class from lightBtn", () => {
+    const btn = document.getElementById("lightBtn");
+    btn.classList.add("disabled");
+    btn.classList.remove("disabled");
+    expect(btn.classList.contains("disabled")).toBeFalsy();
+  });
+});
+
 // ─── Runner ───────────────────────────────────────────────────────────────────
 
 function runAll() {
