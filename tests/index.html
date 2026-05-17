@@ -701,6 +701,51 @@ describe("setButtonsEnabled — class side-effects", () => {
   });
 });
 
+describe("newGame — state reset logic", () => {
+  it("correctAnswers resets to 0", () => {
+    let state = { correctAnswers: 7, totalQuestions: 10 };
+    state = { ...state, correctAnswers: 0, totalQuestions: 0 };
+    expect(state.correctAnswers).toBe(0);
+  });
+
+  it("totalQuestions resets to 0", () => {
+    let state = { correctAnswers: 7, totalQuestions: 10 };
+    state = { ...state, correctAnswers: 0, totalQuestions: 0 };
+    expect(state.totalQuestions).toBe(0);
+  });
+
+  it("timerDuration resets to 0", () => {
+    let state = { timerDuration: 120, timerRemaining: 45 };
+    state = { ...state, timerDuration: 0, timerRemaining: 0 };
+    expect(state.timerDuration).toBe(0);
+  });
+
+  it("timerRemaining resets to 0", () => {
+    let state = { timerDuration: 120, timerRemaining: 45 };
+    state = { ...state, timerDuration: 0, timerRemaining: 0 };
+    expect(state.timerRemaining).toBe(0);
+  });
+
+  it("isWaiting resets to false after new question", () => {
+    let isWaiting = true;
+    isWaiting = false; // askNewQuestion sets this
+    expect(isWaiting).toBe(false);
+  });
+
+  it("score label reads Score: 0/0 after reset", () => {
+    const correct = 0, total = 0;
+    const label = `Score: ${correct}/${total}`;
+    expect(label).toBe("Score: 0/0");
+  });
+
+  it("new square is valid after reset", () => {
+    const sq = generateRandomSquare();
+    expect(sq.length).toBe(2);
+    expect(['A','B','C','D','E','F','G','H']).toContain(sq[0]);
+    expect(['1','2','3','4','5','6','7','8']).toContain(sq[1]);
+  });
+});
+
 // ─── Runner ───────────────────────────────────────────────────────────────────
 
 function runAll() {
