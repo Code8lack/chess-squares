@@ -214,66 +214,24 @@ body {
     transition: background-color 0.2s ease;
 }
 
+.image-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 /* Ensure the knight image scales the same way as the SVG */
 #knightImg {
+    display: block;
+    margin: 0 auto;
+    max-width: 200px;
+    max-height: 200px;
     object-fit: contain;
     background-color: rgba(100, 100, 100, 0.3);
     border: 1px solid #333;
     border-radius: 8px;
 }
 
-@media (max-width: 480px) {
-        body {
-        padding: 10px;     /* reduce from 20px */
-    }
-    
-    .container {
-        border-radius: 12px; /* optional: less rounding on small screens */
-    }
-
-    .square-name {
-        font-size: 3rem;
-        min-width: 150px;
-    }
-    
-    .chess-btn {
-        font-size: 1.2rem;
-        padding: 15px;
-        min-width: 100px;
-    }
-    
-    .score-label {
-        font-size: 1.5rem;
-    }
-    
-    .feedback-message {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 380px) {
-    .button-container {
-        gap: 10px;
-    }
-    
-    .chess-btn {
-        min-width: 80px;
-        padding: 12px;
-        font-size: 1rem;
-    }
-
-}
-
-@media (max-width: 480px) {
-    .settingsColumn {
-        float: none;
-        left: auto;
-        width: 100%;
-        max-width: 200px;
-        margin: 0 auto 20px auto;
-        align-items: center;
-    }
-}
 
 .settingsColumn {
     position: relative;
@@ -296,6 +254,98 @@ body {
     height: 60px;
     cursor: pointer;
 }
+
+/* ===== SINGLE .image-area rule ===== */
+.image-area {
+    padding: 20px;
+    text-align: center;
+    border-top: 2px solid rgba(0,0,0,0.1);
+    transition: background-color 0.2s ease;
+}
+
+/* ===== SINGLE @media (max-width: 480px) block ===== */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        border-radius: 12px;
+    }
+
+    .square-name {
+        font-size: 3rem;
+        min-width: 150px;
+    }
+    
+        .button-container {
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .chess-btn {
+        flex: 1;
+        max-width: 140px;    /* was missing — prevents over-expansion */
+        min-width: 120px;
+        padding: 15px;
+        font-size: 1.2rem;
+    }
+
+    /* Fix image-area layout so caption wraps below */
+    .image-area {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .settingsColumn {
+        float: none;
+        left: auto;
+        width: auto;
+        min-width: 120px;
+        margin: 0;
+        flex: 0 0 auto;
+        align-items: stretch;
+    }
+    
+    .settingsColumn button {
+        width: 100%;
+        height: 50px;
+        font-size: 14px;
+    }
+    
+    .chessboard-svg,
+    #knightImg {
+        flex: 0 0 auto;
+        width: 150px;
+        height: 150px;
+        margin: 0;           /* remove auto margin in flex context */
+    }
+    
+    .image-caption {
+        flex-basis: 100%;    /* forces caption to full width, wraps below image */
+        text-align: center;
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 380px) {
+    .button-container {
+        gap: 10px;
+    }
+    
+    .chess-btn {
+        max-width: 140px;
+        min-width: 80px;
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+}
+
 
 /* ================================= TIMER + SETTINGS PANEL OVERLAY ================================== */
 
