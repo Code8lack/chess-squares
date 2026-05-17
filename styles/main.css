@@ -284,10 +284,9 @@ body {
     }
     
     .chess-btn {
-        flex: 1;
-        max-width: 140px;    /* was missing — prevents over-expansion */
-        min-width: 120px;
-        padding: 15px;
+        flex: 0 1 100px;
+        width: 200px;    /* was missing — prevents over-expansion */
+        padding: 10px 40px; /*iPhone 14*/
         font-size: 1.2rem;
     }
 
