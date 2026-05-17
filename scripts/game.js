@@ -356,9 +356,11 @@ function startTimer() {
     clearInterval(timerInterval);
     timerDuration = mins * 60;
     timerRemaining = timerDuration;
+    correctAnswers = 0;
+    totalQuestions = 0;
     closeSettingsOverlay();
-    tickTimer();
     timerInterval = setInterval(tickTimer, 1000);
+    askNewQuestion(true);
 }
 
 function clearTimer() {
