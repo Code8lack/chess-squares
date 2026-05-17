@@ -38,6 +38,21 @@ if (savedPlayer && players[savedPlayer]) {
 
 const HISTORY_KEY = 'chessSquares_history';
 
+function newGame() {
+    saveSession();
+    correctAnswers = 0;
+    totalQuestions = 0;
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerDuration = 0;
+    timerRemaining = 0;
+    saveCurrentPlayer();
+    updateScoreDisplay();
+    clearTimeout(nextQuestionTimeout);
+    nextQuestionTimeout = null;
+    askNewQuestion(true);
+}
+
 function toggleMode() {
     levelSound.play().catch(() => {});
     const isBoardVisible = boardSvg.style.display !== 'none';
@@ -208,23 +223,6 @@ function saveSession() {
     return true;
 }
 
-function newGame() {
-    const midGame = totalQuestions > 0;
-    if (midGame && !confirm('Start a new game?')) return;
-
-    saveSession();
-    correctAnswers = 0;
-    totalQuestions = 0;
-    clearInterval(timerInterval);
-    timerInterval = null;
-    timerDuration = 0;
-    timerRemaining = 0;
-    saveCurrentPlayer();
-    updateScoreDisplay();
-    clearTimeout(nextQuestionTimeout);
-    nextQuestionTimeout = null;
-    askNewQuestion(true);
-}
 
 function showToast(msg = '✦ New Game ✦') {
     let toast = document.getElementById('toast');
