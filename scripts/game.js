@@ -29,8 +29,13 @@ const clickSound = document.getElementById('clickSound');
 const STORAGE_KEY = 'chessSquares_players';
 let players = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
 let currentPlayer = null;
+
 const savedPlayer = localStorage.getItem('chessSquares_currentPlayer');
-if (savedPlayer && players[savedPlayer]) selectPlayer(savedPlayer);
+if (savedPlayer && players[savedPlayer]) {
+    currentPlayer = savedPlayer;
+    document.getElementById('playerBtn').textContent = '👤 ' + savedPlayer;
+}
+
 const HISTORY_KEY = 'chessSquares_history';
 
 function toggleMode() {
@@ -51,10 +56,15 @@ function toggleMode() {
 }
 
 function selectPlayer(name) {
-    if (currentPlayer && totalQuestions > 0) {
-        if (!confirm(`Save current game and start fresh as ${name}?`)) return;
-        saveSession();
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        if (!confirm(`Stop current game and switch to ${name}?`)) {
+            timerInterval = setInterval(tickTimer, 1000); // resume if cancelled
+            return;
+        }
     }
+    saveSession();
     saveCurrentPlayer(); // flush outgoing player
     // zero out the outgoing player's live score in storage
     if (currentPlayer) {
@@ -65,10 +75,16 @@ function selectPlayer(name) {
     if (!players[name]) players[name] = { correct: 0, total: 0 };
     correctAnswers = players[name].correct;
     totalQuestions = players[name].total;
-    updateScoreDisplay();
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerDuration = 0;
+    timerRemaining = 0;
+    clearTimeout(nextQuestionTimeout);
+    nextQuestionTimeout = null;
     document.getElementById('playerBtn').textContent = '👤 ' + name;
     localStorage.setItem('chessSquares_currentPlayer', name);
     closePlayerPanel();
+    askNewQuestion();
 }
 
 function saveCurrentPlayer() {
