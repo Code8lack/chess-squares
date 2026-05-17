@@ -51,7 +51,7 @@ function toggleMode() {
 }
 
 function selectPlayer(name) {
-    if (totalQuestions > 0) {
+    if (currentPlayer && totalQuestions > 0) {
         if (!confirm(`Save current game and start fresh as ${name}?`)) return;
         saveSession();
     }
@@ -96,7 +96,7 @@ function renderPlayerList() {
     guestRow.innerHTML = `<span class="player-name">👤 Guest</span>
                           <span class="player-score">—</span>`;
     guestRow.onclick = () => {
-        if (totalQuestions > 0) {
+        if (currentPlayer && totalQuestions > 0) {
             if (!confirm('Save current game and switch to Guest?')) return;
             saveSession();
         }
