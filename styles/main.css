@@ -191,12 +191,6 @@ body {
     opacity: 1 !important;
 }
 
-.image-area {
-    padding: 20px;
-    text-align: center;
-    border-top: 2px solid rgba(150,0,0,0.1);
-}
-
 .chessboard-svg {
     width: 200px;
     height: 200px;
@@ -229,6 +223,14 @@ body {
 }
 
 @media (max-width: 480px) {
+        body {
+        padding: 10px;     /* reduce from 20px */
+    }
+    
+    .container {
+        border-radius: 12px; /* optional: less rounding on small screens */
+    }
+
     .square-name {
         font-size: 3rem;
         min-width: 150px;
@@ -262,18 +264,27 @@ body {
 
 }
 
+@media (max-width: 480px) {
+    .settingsColumn {
+        float: none;
+        left: auto;
+        width: 100%;
+        max-width: 200px;
+        margin: 0 auto 20px auto;
+        align-items: center;
+    }
+}
 
 .settingsColumn {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    float:left;
+    float: left;
     left: 40px;
     width: 150px;
     margin: 0 25px 25px 0;
 }
-
 
 .settingsColumn button {
     background-color: floralwhite;
