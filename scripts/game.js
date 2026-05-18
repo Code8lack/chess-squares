@@ -33,7 +33,7 @@ let currentPlayer = null;
 const savedPlayer = localStorage.getItem('chessSquares_currentPlayer');
 if (savedPlayer && players[savedPlayer]) {
     currentPlayer = savedPlayer;
-    document.getElementById('playerBtn').textContent = '👤 ' + savedPlayer;
+    document.getElementById('playerBtn').textContent = '👤 ' + savedPlayer.toUpperCase();
 }
 
 const HISTORY_KEY = 'chessSquares_history';
