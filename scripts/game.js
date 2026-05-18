@@ -45,13 +45,27 @@ const THEME_KEY = 'chessSquares_theme';
     if (t) document.documentElement.setAttribute('data-theme', t);
 })();
 
-function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'pink' ? '' : 'pink';
-    document.documentElement.setAttribute('data-theme', next);
-    if (next) localStorage.setItem(THEME_KEY, next);
+function setTheme(name) {
+    document.documentElement.setAttribute('data-theme', name);
+    if (name) localStorage.setItem(THEME_KEY, name);
     else localStorage.removeItem(THEME_KEY);
-    document.getElementById('themeBtn').textContent = next === 'pink' ? '🟠 CLASSIC' : '💜 PINK';
+}
+
+function openSettingsSub(name) {
+    document.querySelectorAll('.settings-sub').forEach(el => el.style.display = 'none');
+    document.getElementById('settingsSub-' + name).style.display = 'block';
+    document.getElementById('settingsRoot').style.display = 'none';
+    document.getElementById('settingsBackBtn').style.display = 'block';
+    document.getElementById('settingsPanelTitle').textContent =
+        ({ timer: 'Timer', history: 'History', themes: 'Themes' })[name];
+    if (name === 'history') renderHistory();
+}
+
+function closeSettingsSub() {
+    document.querySelectorAll('.settings-sub').forEach(el => el.style.display = 'none');
+    document.getElementById('settingsRoot').style.display = 'flex';
+    document.getElementById('settingsBackBtn').style.display = 'none';
+    document.getElementById('settingsPanelTitle').textContent = 'Settings';
 }
 
 function newGame() {
@@ -327,7 +341,7 @@ if (userGuess === actualColor) {
 
 function openSettingsPanel() {
     document.getElementById('timerMinutes').value = 1;
-    renderHistory();
+    closeSettingsSub();
     document.getElementById('settingsOverlay').style.display = 'flex';
 }
 
