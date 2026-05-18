@@ -124,7 +124,7 @@ function renderPlayerList() {
 
     const guestRow = document.createElement('div');
     guestRow.className = 'player-row' + (!currentPlayer ? ' active' : '');
-    guestRow.innerHTML = `<span class="player-name">👤 Guest</span>
+    guestRow.innerHTML = `<span class="player-name">👤 GUEST</span>
                           <span class="player-score">—</span>`;
     guestRow.onclick = () => {
         if (currentPlayer && totalQuestions > 0) {
@@ -135,7 +135,7 @@ function renderPlayerList() {
         currentPlayer = null;
         correctAnswers = 0;
         totalQuestions = 0;
-        document.getElementById('playerBtn').textContent = '👤 Guest';
+        document.getElementById('playerBtn').textContent = '👤 GUEST';
         localStorage.removeItem('chessSquares_currentPlayer');
         updateScoreDisplay();
         closePlayerPanel();
@@ -180,7 +180,7 @@ function deletePlayer(name) {
         currentPlayer = null;
         correctAnswers = 0;
         totalQuestions = 0;
-        document.getElementById('playerBtn').textContent = '👤 Guest';
+        document.getElementById('playerBtn').textContent = '👤 GUEST';
         updateScoreDisplay();
     }
     renderPlayerList();
