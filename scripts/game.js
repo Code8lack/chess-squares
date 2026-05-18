@@ -49,6 +49,7 @@ function setTheme(name) {
     document.documentElement.setAttribute('data-theme', name);
     if (name) localStorage.setItem(THEME_KEY, name);
     else localStorage.removeItem(THEME_KEY);
+    closeSettingsOverlay();
 }
 
 function openSettingsSub(name) {
