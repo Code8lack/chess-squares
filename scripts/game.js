@@ -127,7 +127,7 @@ function selectPlayer(name) {
     timerRemaining = 0;
     clearTimeout(nextQuestionTimeout);
     nextQuestionTimeout = null;
-    document.getElementById('playerBtn').textContent = '👤 ' + name;
+    document.getElementById('playerBtn').textContent = '👤 ' + name.toUpperCase();
     localStorage.setItem('chessSquares_currentPlayer', name);
     closePlayerPanel();
     askNewQuestion();
@@ -365,7 +365,7 @@ function renderHistory() {
         const duration = s.duration ? formatTime(s.duration) : '—';
         const row = document.createElement('div');
         row.className = 'history-row';
-        row.innerHTML = `<span class="history-player">${s.player}</span>
+                        row.innerHTML = `<span class="history-player">${s.player.toUpperCase()}</span>
                          <span class="history-score">${s.correct}/${s.total} (${s.pct}%)</span>
                          <span class="history-duration">${duration}</span>
                          <span class="history-date">${date}</span>`;
