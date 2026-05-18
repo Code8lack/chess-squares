@@ -111,12 +111,7 @@ function selectPlayer(name) {
         }
     }
     saveSession();
-    saveCurrentPlayer(); // flush outgoing player
-    // zero out the outgoing player's live score in storage
-    if (currentPlayer) {
-        players[currentPlayer] = { correct: 0, total: 0 };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
-    }
+    saveCurrentPlayer();
     currentPlayer = name;
     if (!players[name]) players[name] = { correct: 0, total: 0 };
     correctAnswers = players[name].correct;
