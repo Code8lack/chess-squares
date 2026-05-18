@@ -23,7 +23,7 @@ body {
     background-color: slategray;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    border: 3px solid indianred;
+    border: 2px solid indianred;
     overflow: hidden;
 }
 
@@ -68,13 +68,11 @@ body {
     background-color: rgba(200,0,0,0.6);
     padding: 10px 20px;
     border-radius: 40px;
-    border: 1px solid #333;
     display: inline-block;
 }
 
 .square-display {
     background-color: rgba(100, 100, 100, 0.3);
-    border: 1px solid #333;
     border-radius: 10px;
     padding: 30px 20px;
     text-align: center;
@@ -89,7 +87,6 @@ body {
     background-color: skyblue;
     padding: 20px;
     border-radius: 8px;
-    border:1px solid #333;
     display: inline-block;
     min-width: 200px;
     font-family: 'Courier New', monospace;
@@ -116,7 +113,6 @@ body {
     padding: 20px;
     font-size: 1.5rem;
     font-weight: bold;
-    border: 3px solid transparent;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -142,7 +138,6 @@ body {
     background-color: #2F4F4F;
     color: #E0E0E0;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    border: 1px solid transparent;
 }
 
 .chess-btn:hover,
@@ -158,7 +153,6 @@ body {
     background-color: floralwhite;
     color: #333333;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    border: 1px solid transparent;
 }
 
 .light-btn:active:not(.disabled) {
@@ -178,7 +172,6 @@ body {
     font-weight: bold;
     padding: 15px;
     border-radius: 15px;
-    border:1px solid #333;
     background-color: rgba(0,0,0,0.1);
     max-width: 85%;
     margin:0 auto;
@@ -199,8 +192,7 @@ body {
     margin: 0 auto;
     display: block;
     border-radius: 2px;
-    border: 2px solid #333;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border: 2px solid indianred;
     cursor: pointer; /* Makes it look clickable */
 }
 
@@ -213,7 +205,7 @@ body {
 .image-area {
     padding: 20px;
     text-align: center;
-    border-top: 2px solid rgba(0,0,0,0.1);
+    border-top: 2px solid rgba(20,0,0,0.1);
     transition: background-color 0.2s ease;
 }
 
@@ -231,7 +223,6 @@ body {
     max-height: 200px;
     object-fit: contain;
     background-color: rgba(100, 100, 100, 0.3);
-    border: 1px solid #333;
     border-radius: 8px;
 }
 
@@ -248,14 +239,31 @@ body {
 
 .settingsColumn button {
     background-color: floralwhite;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    border: 1px solid #333;
     border-radius: 20px;
     font-size: 15px;
     width: 100%;
     height: 60px;
     cursor: pointer;
 }
+
+.settingsColumn button,
+.feedback-message,
+.chessboard-svg,
+.square-display,
+.score-label,
+.square-name,
+.chess-btn,
+#knightImg {
+    border: 1px solid indianred;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.square-display,
+.square-name,
+.score-label {
+    box-shadow: none;
+}
+
 
 /* ===== SINGLE .image-area rule ===== */
 .image-area {
