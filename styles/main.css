@@ -8,7 +8,7 @@
 
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: linear-gradient(160deg, #e8f4fd 0%, #b8d4f0 40%, #7ba8e0 100%) fixed;
+    background: linear-gradient(160deg, #e0f7fa 0%, #80deea 40%, #26c6da 100%) fixed;
     min-height: 100vh;
     display: flex;
     justify-content: center;
