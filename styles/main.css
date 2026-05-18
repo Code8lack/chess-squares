@@ -600,6 +600,18 @@ body {
 #closePanel:hover { color: #fff; }
 
 
+/* =================================== TIMER PULSE ================================== */
+
+@keyframes timerGlow {
+    0%, 100% { box-shadow: 0 0 8px 2px white; }
+    50%       { box-shadow: 0 0 20px 8px white; }
+}
+
+.score-label-expired {
+    animation: timerGlow 1s ease-in-out infinite;
+}
+
+
 /* =================================== NEW GAME PULSE + TOAST ================================== */
 
 

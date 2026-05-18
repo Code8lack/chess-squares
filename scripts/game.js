@@ -40,6 +40,7 @@ const HISTORY_KEY = 'chessSquares_history';
 
 function newGame() {
     saveSession();
+    scoreLabelEl.classList.remove('score-label-expired');
     correctAnswers = 0;
     totalQuestions = 0;
     clearInterval(timerInterval);
@@ -352,6 +353,7 @@ function startTimer() {
     const mins = parseInt(document.getElementById('timerMinutes').value);
     if (!mins || mins < 1) return;
     clearInterval(timerInterval);
+    scoreLabelEl.classList.remove('score-label-expired');
     timerDuration = mins * 60;
     timerRemaining = timerDuration;
     correctAnswers = 0;
@@ -374,6 +376,7 @@ function tickTimer() {
     timerRemaining--;
     if (timerRemaining <= 0) {
         timerSound.play().catch(() => {});
+        scoreLabelEl.classList.add('score-label-expired');
         timerRemaining = 0;
         clearInterval(timerInterval);
         timerInterval = null;
