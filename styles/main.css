@@ -119,6 +119,7 @@ body {
     text-align: center;
     font-family: inherit;
     -webkit-tap-highlight-color: transparent;
+    margin-bottom: -15px;
 }
 
 .chess-btn:active {
@@ -239,6 +240,7 @@ body {
 
 .settingsColumn button {
     background-color: floralwhite;
+    border: 2px solid indianred;
     border-radius: 20px;
     font-size: 15px;
     width: 100%;
@@ -255,13 +257,14 @@ body {
 .chess-btn,
 #knightImg {
     border: 1px solid indianred;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);/* --recessed-- */
 }
 
+.feedback-message,
 .square-display,
 .square-name,
 .score-label {
-    box-shadow: none;
+    box-shadow: inset 0 6px 8px -4px rgba(0, 0, 0, 0.5);
 }
 
 
