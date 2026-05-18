@@ -336,12 +336,12 @@ function checkAnswer(userGuess) {
     totalQuestions++;
     
 if (userGuess === actualColor) {
-        feedbackMessageEl.innerHTML = `✓ Correct! ${currentSquare} is ${actualColor}. ✓`;
+        feedbackMessageEl.innerHTML = `Correct! ${currentSquare} is ${actualColor}.`;
         feedbackMessageEl.className = "feedback-message feedback-correct";
         correctAnswers++;
         spawnConfetti();
     } else {
-        feedbackMessageEl.innerHTML = `✗ Incorrect. ${currentSquare} is ${actualColor}. ✗`;
+        feedbackMessageEl.innerHTML = `Incorrect. ${currentSquare} is ${actualColor}.`;
         feedbackMessageEl.className = "feedback-message feedback-incorrect";
     }
 
