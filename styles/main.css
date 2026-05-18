@@ -743,6 +743,6 @@ body {
 .confetti-particle {
     position: absolute;
     pointer-events: none;
-    font-size: 1rem;
-    animation: confettiBurst 0.7s ease-out forwards;
+    font-size: 1.5rem;
+    animation: confettiBurst 0.8s ease-out forwards;
 }
