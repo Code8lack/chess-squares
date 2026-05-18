@@ -51,7 +51,7 @@ body {
 }
 
 .subtitle {
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     margin-top: 5px;
 }
 
@@ -650,3 +650,37 @@ body {
 }
 
 
+/* ====================== PINK / LAVENDER THEME ======================== */
+
+[data-theme="pink"] {
+    --theme-bg:        #f3e8ff;
+    --theme-surface:   #e9d5ff;
+    --theme-accent:    #c084fc;
+    --theme-header-bg: #6b21a8;
+    --theme-score-bg:  rgba(168, 85, 247, 0.35);
+    --theme-btn-light: #fdf2f8;
+    --theme-btn-dark:  #5b21b6;
+    --theme-square:    #e9d5ff;
+    --theme-text:      #3b0764;
+}
+
+[data-theme="pink"] body                        { background-color: #ddd6fe; }
+[data-theme="pink"] .container,
+[data-theme="pink"] .message-area,
+[data-theme="pink"] .image-area,
+[data-theme="pink"] .score-section              { background-color: var(--theme-bg); }
+[data-theme="pink"] .app-header                 { background-color: var(--theme-header-bg); }
+[data-theme="pink"] .app-header h1,
+[data-theme="pink"] .subtitle                   { color: #f3e8ff; }
+[data-theme="pink"] .score-label                { background-color: var(--theme-score-bg); color: var(--theme-text); }
+[data-theme="pink"] .square-name                { background-color: var(--theme-square); color: var(--theme-text); }
+[data-theme="pink"] .question-text              { color: var(--theme-text); }
+[data-theme="pink"] .dark-btn                   { background-color: var(--theme-btn-dark); color: #f3e8ff; }
+[data-theme="pink"] .light-btn                  { background-color: var(--theme-btn-light); color: var(--theme-text); }
+[data-theme="pink"] .chess-btn:hover,
+[data-theme="pink"] .settingsColumn button:hover { background: var(--theme-accent); color: #fff; }
+[data-theme="pink"] .settingsColumn button      { background-color: #fdf4ff; color: var(--theme-text); border-color: #c084fc; }
+[data-theme="pink"] .feedback-correct           { color: #15803d; }
+[data-theme="pink"] .feedback-incorrect         { color: #9f1239; }
+[data-theme="pink"] .image-caption              { color: var(--theme-text); }
+[data-theme="pink"] #toast                      { background: #fce7f3; color: #6b21a8; }

@@ -38,6 +38,22 @@ if (savedPlayer && players[savedPlayer]) {
 
 const HISTORY_KEY = 'chessSquares_history';
 
+// Theme
+const THEME_KEY = 'chessSquares_theme';
+(function applyStoredTheme() {
+    const t = localStorage.getItem(THEME_KEY);
+    if (t) document.documentElement.setAttribute('data-theme', t);
+})();
+
+function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'pink' ? '' : 'pink';
+    document.documentElement.setAttribute('data-theme', next);
+    if (next) localStorage.setItem(THEME_KEY, next);
+    else localStorage.removeItem(THEME_KEY);
+    document.getElementById('themeBtn').textContent = next === 'pink' ? '🟠 CLASSIC' : '💜 PINK';
+}
+
 function newGame() {
     saveSession();
     scoreLabelEl.classList.remove('score-label-expired');
