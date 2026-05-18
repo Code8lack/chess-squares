@@ -250,7 +250,6 @@ function saveSession() {
     return true;
 }
 
-
 function showToast(msg = '✦ New Game ✦') {
     let toast = document.getElementById('toast');
     if (!toast) {
@@ -305,6 +304,26 @@ function askNewQuestion(isNewGame = false) {
     setButtonsEnabled(true);
 }
 
+function spawnConfetti() {
+    const particles = ['✦','✧','★','✿','♦','·','❋'];
+    const colors = ['#f472b6','#a78bfa','#60a5fa','#34d399','#fbbf24','#f87171'];
+    const area = document.querySelector('.message-area');
+
+    for (let i = 0; i < 12; i++) {
+        const el = document.createElement('span');
+        el.className = 'confetti-particle';
+        el.textContent = particles[Math.floor(Math.random() * particles.length)];
+        el.style.color = colors[Math.floor(Math.random() * colors.length)];
+        el.style.left = (20 + Math.random() * 60) + '%';
+        el.style.top  = (20 + Math.random() * 60) + '%';
+        el.style.setProperty('--dx', (Math.random() * 120 - 60) + 'px');
+        el.style.setProperty('--dy', (Math.random() * -80 - 20) + 'px');
+        el.style.animationDelay = (Math.random() * 0.2) + 's';
+        area.appendChild(el);
+        el.addEventListener('animationend', () => el.remove());
+    }
+}
+
 // Check user's answer
 function checkAnswer(userGuess) {
     if (isWaiting) return;
@@ -320,6 +339,7 @@ if (userGuess === actualColor) {
         feedbackMessageEl.innerHTML = `✓ Correct! ${currentSquare} is ${actualColor}. ✓`;
         feedbackMessageEl.className = "feedback-message feedback-correct";
         correctAnswers++;
+        spawnConfetti();
     } else {
         feedbackMessageEl.innerHTML = `✗ Incorrect. ${currentSquare} is ${actualColor}. ✗`;
         feedbackMessageEl.className = "feedback-message feedback-incorrect";
