@@ -8,7 +8,7 @@
 
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #888;
+    body { background: linear-gradient(160deg, #fff0f7 0%, #ede9fe 40%, #c7d2fe 100%) fixed; }
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -664,7 +664,10 @@ body {
     --theme-text:      #3b0764;
 }
 
-[data-theme="pink"] body                        { background-color: #ddd6fe; }
+/*[data-theme="pink"] body                        { background-color: #ddd6fe; }*/
+[data-theme="pink"] body {
+  background: linear-gradient(160deg, #ff9ecb 0%, #ad9afa 40%, #7691fc 100%) fixed;
+}
 [data-theme="pink"] .container,
 [data-theme="pink"] .message-area,
 [data-theme="pink"] .image-area,
