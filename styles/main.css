@@ -686,3 +686,36 @@ body {
 [data-theme="pink"] .feedback-incorrect         { color: #9f1239; }
 [data-theme="pink"] .image-caption              { color: var(--theme-text); }
 [data-theme="pink"] #toast                      { background: #fce7f3; color: #6b21a8; }
+
+
+/* ====================== SETTINGS OVERLAY ========================== */
+
+.settings-nav-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    color: #fff;
+    padding: 14px 18px;
+    font-family: inherit;
+    font-size: 1rem;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.15s;
+}
+
+.settings-nav-btn:hover { background: rgba(255,255,255,0.12); }
+
+#settingsBackBtn {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: left;
+    padding: 0;
+}
+
+#settingsBackBtn:hover { color: #fff; }
+
