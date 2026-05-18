@@ -373,6 +373,7 @@ function clearTimer() {
 function tickTimer() {
     timerRemaining--;
     if (timerRemaining <= 0) {
+        timerSound.play().catch(() => {});
         timerRemaining = 0;
         clearInterval(timerInterval);
         timerInterval = null;
