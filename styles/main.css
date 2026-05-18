@@ -169,10 +169,11 @@ body {
 }
 
 .feedback-message {
-    font-size: 1.3rem;
-    font-weight: bold;
+    font-size: 1.5rem;
+    font-weight: normal;
     padding: 15px;
     border-radius: 15px;
+    min-height: 4rem;/*ESSENTIAL for mobile element stability*/
     background-color: rgba(0,0,0,0.1);
     max-width: 85%;
     margin:0 auto;

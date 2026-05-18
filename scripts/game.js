@@ -316,11 +316,11 @@ function checkAnswer(userGuess) {
     totalQuestions++;
     
 if (userGuess === actualColor) {
-        feedbackMessageEl.innerHTML = `✓ Correct! ${currentSquare} is a ${actualColor} square. ✓`;
+        feedbackMessageEl.innerHTML = `✓ Correct! ${currentSquare} is ${actualColor}. ✓`;
         feedbackMessageEl.className = "feedback-message feedback-correct";
         correctAnswers++;
     } else {
-        feedbackMessageEl.innerHTML = `✗ Incorrect. ${currentSquare} is a ${actualColor} square. ✗`;
+        feedbackMessageEl.innerHTML = `✗ Incorrect. ${currentSquare} is ${actualColor}. ✗`;
         feedbackMessageEl.className = "feedback-message feedback-incorrect";
     }
 
