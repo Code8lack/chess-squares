@@ -39,5 +39,8 @@ open index.html
 # or use a local server:
 python -m http.server 8000
 ```
-<img width="729" height="789" alt="Screenshotted 2026-05-17 at 13 27 32" src="https://github.com/user-attachments/assets/9c3743d5-cb67-4cb4-8a1f-b9df9dddfd7e" />
+<img width="735" height="655" alt="Screenshotted 2026-05-18 at 13 48 18" src="https://github.com/user-attachments/assets/686c59ae-47d1-4dd4-a6b6-5bbca7ae29e7" />
+<img width="730" height="656" alt="Screenshotted 2026-05-18 at 13 48 04" src="https://github.com/user-attachments/assets/27404929-ebce-4168-94a4-c8a90e96fc36" />
+<img width="730" height="654" alt="Screenshotted 2026-05-18 at 13 49 53" src="https://github.com/user-attachments/assets/7d7e0d89-192d-42db-84cb-4098db22d4af" />
+<img width="730" height="655" alt="Screenshotted 2026-05-18 at 13 49 35" src="https://github.com/user-attachments/assets/4a31b747-3f8f-4ae8-85f7-5fc644ae3276" />
 
