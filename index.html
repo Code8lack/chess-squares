@@ -96,26 +96,42 @@
                 </div>
 
                 <div id="settingsOverlay" style="display:none">
-                  <div id="settingsPanel">
-                    <h2>Settings</h2>
+                    <div id="settingsPanel">
+                      <h2 id="settingsPanelTitle">Settings</h2>
 
-                    <div class="settings-section">
-                      <h3>Timer</h3>
-                      <div id="timerInputRow">
-                        <input id="timerMinutes" type="number" min="1" max="60" placeholder="minutes">
-                        <button onclick="startTimer()">Start</button>
+                      <div id="settingsRoot">
+                        <button class="settings-nav-btn" onclick="openSettingsSub('timer')">⏱ Timer</button>
+                        <button class="settings-nav-btn" onclick="openSettingsSub('history')">📜 History</button>
+                        <button class="settings-nav-btn" onclick="openSettingsSub('themes')">🎨 Themes</button>
                       </div>
-                      <button id="noTimerBtn" onclick="clearTimer()">No Timer</button>
-                    </div>
 
-                    <div class="settings-section">
-                      <h3>History</h3>
-                      <div id="historyList"></div>
-                      <button id="clearHistoryBtn" onclick="clearHistory()">Clear History</button>
-                    </div>
+                      <div id="settingsSub-timer" class="settings-sub" style="display:none">
+                        <div class="settings-section">
+                          <div id="timerInputRow">
+                            <input id="timerMinutes" type="number" min="1" max="60" placeholder="minutes">
+                            <button onclick="startTimer()">Start</button>
+                          </div>
+                          <button id="noTimerBtn" onclick="clearTimer()">No Timer</button>
+                        </div>
+                      </div>
 
-                    <button id="closeSettingsPanel" onclick="closeSettingsOverlay()">✕</button>
-                  </div>
+                      <div id="settingsSub-history" class="settings-sub" style="display:none">
+                        <div class="settings-section">
+                          <div id="historyList"></div>
+                          <button id="clearHistoryBtn" onclick="clearHistory()">Clear History</button>
+                        </div>
+                      </div>
+
+                      <div id="settingsSub-themes" class="settings-sub" style="display:none">
+                        <div class="settings-section">
+                          <button class="settings-nav-btn" id="themeClassicBtn" onclick="setTheme('')">🟠 Classic</button>
+                          <button class="settings-nav-btn" id="themePinkBtn"    onclick="setTheme('pink')">💜 Pink</button>
+                        </div>
+                      </div>
+
+                      <button id="settingsBackBtn" onclick="closeSettingsSub()" style="display:none">← Back</button>
+                      <button id="closeSettingsPanel" onclick="closeSettingsOverlay()">✕</button>
+                    </div>
                 </div>
             </div>
         </div>
