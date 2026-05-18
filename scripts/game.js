@@ -302,7 +302,7 @@ function askNewQuestion(isNewGame = false) {
         setTimeout(() => squareNameEl.classList.add('square-new-game'), 10);
     }
     
-    feedbackMessageEl.innerHTML = "🤔 Is this a dark or light square?";
+    feedbackMessageEl.innerHTML = "🤔 Black or White?";
     feedbackMessageEl.className = "feedback-message";
     
     updateScoreDisplay();
