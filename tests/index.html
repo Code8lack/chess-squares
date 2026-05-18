@@ -157,6 +157,7 @@
 
 <!-- Hidden sandbox DOM for UI tests -->
 <div id="game-root">
+  <div class="message-area" id="testMessageArea"></div>
   <div id="squareName">A1</div>
   <div id="scoreLabel">Score: 0/0</div>
   <div id="feedbackMessage"></div>
@@ -743,6 +744,136 @@ describe("newGame — state reset logic", () => {
     expect(sq.length).toBe(2);
     expect(['A','B','C','D','E','F','G','H']).toContain(sq[0]);
     expect(['1','2','3','4','5','6','7','8']).toContain(sq[1]);
+  });
+});
+
+// ─── spawnConfetti ────────────────────────────────────────────────────────────
+
+describe("spawnConfetti — particle generation", () => {
+  const VALID_PARTICLES = ['✦','✧','★','✿','♦','·','❋'];
+  const VALID_COLORS = [
+    'rgb(244, 114, 182)', // #f472b6
+    'rgb(167, 139, 250)', // #a78bfa
+    'rgb(96, 165, 250)',  // #60a5fa
+    'rgb(52, 211, 153)',  // #34d399
+    'rgb(251, 191, 36)',  // #fbbf24
+    'rgb(248, 113, 113)'  // #f87171
+];
+
+  function spawnConfetti() {
+    const particles = ['✦','✧','★','✿','♦','·','❋'];
+    const colors = ['#f472b6','#a78bfa','#60a5fa','#34d399','#fbbf24','#f87171'];
+    const area = document.getElementById('testMessageArea');
+    for (let i = 0; i < 12; i++) {
+      const el = document.createElement('span');
+      el.className = 'confetti-particle';
+      el.textContent = particles[Math.floor(Math.random() * particles.length)];
+      el.style.color = colors[Math.floor(Math.random() * colors.length)];
+      el.style.left = (20 + Math.random() * 60) + '%';
+      el.style.top  = (20 + Math.random() * 60) + '%';
+      el.style.setProperty('--dx', (Math.random() * 120 - 60) + 'px');
+      el.style.setProperty('--dy', (Math.random() * -80 - 20) + 'px');
+      el.style.animationDelay = (Math.random() * 0.2) + 's';
+      area.appendChild(el);
+      el.addEventListener('animationend', () => el.remove());
+    }
+  }
+
+  it("spawns exactly 12 particles", () => {
+    const area = document.getElementById('testMessageArea');
+    const before = area.querySelectorAll('.confetti-particle').length;
+    spawnConfetti();
+    const after = area.querySelectorAll('.confetti-particle').length;
+    expect(after - before).toBe(12);
+    area.querySelectorAll('.confetti-particle').forEach(el => el.remove());
+  });
+
+  it("each particle has class confetti-particle", () => {
+    const area = document.getElementById('testMessageArea');
+    spawnConfetti();
+    area.querySelectorAll('.confetti-particle').forEach(el => {
+      if (!el.classList.contains('confetti-particle'))
+        throw new Error('Missing confetti-particle class');
+    });
+    area.querySelectorAll('.confetti-particle').forEach(el => el.remove());
+  });
+
+  it("each particle text is from the valid set", () => {
+    const area = document.getElementById('testMessageArea');
+    spawnConfetti();
+    area.querySelectorAll('.confetti-particle').forEach(el => {
+      if (!VALID_PARTICLES.includes(el.textContent))
+        throw new Error(`Unexpected particle: ${el.textContent}`);
+    });
+    area.querySelectorAll('.confetti-particle').forEach(el => el.remove());
+  });
+
+  it("each particle color is from the valid set", () => {
+    const area = document.getElementById('testMessageArea');
+    spawnConfetti();
+    area.querySelectorAll('.confetti-particle').forEach(el => {
+      if (!VALID_COLORS.includes(el.style.color))
+        throw new Error(`Unexpected color: ${el.style.color}`);
+    });
+    area.querySelectorAll('.confetti-particle').forEach(el => el.remove());
+  });
+
+  it("left position is between 20% and 80%", () => {
+    const area = document.getElementById('testMessageArea');
+    spawnConfetti();
+    area.querySelectorAll('.confetti-particle').forEach(el => {
+      const val = parseFloat(el.style.left);
+      if (val < 20 || val > 80)
+        throw new Error(`left out of range: ${el.style.left}`);
+    });
+    area.querySelectorAll('.confetti-particle').forEach(el => el.remove());
+  });
+
+  it("top position is between 20% and 80%", () => {
+    const area = document.getElementById('testMessageArea');
+    spawnConfetti();
+    area.querySelectorAll('.confetti-particle').forEach(el => {
+      const val = parseFloat(el.style.top);
+      if (val < 20 || val > 80)
+        throw new Error(`top out of range: ${el.style.top}`);
+    });
+    area.querySelectorAll('.confetti-particle').forEach(el => el.remove());
+  });
+});
+
+describe("checkAnswer — feedback string format", () => {
+  it("correct feedback contains 'Correct'", () => {
+    const sq = "A1", actual = "dark";
+    const msg = `Correct! ${sq} is ${actual}.`;
+    expect(msg).toContain("Correct");
+  });
+
+  it("incorrect feedback contains 'Incorrect'", () => {
+    const sq = "A1", actual = "dark";
+    const msg = `Incorrect. ${sq} is ${actual}.`;
+    expect(msg).toContain("Incorrect");
+  });
+
+  it("correct feedback does not contain ✓", () => {
+    const msg = `Correct! A1 is dark.`;
+    expect(msg).not.toContain("✓");
+  });
+
+  it("incorrect feedback does not contain ✗", () => {
+    const msg = `Incorrect. A1 is dark.`;
+    expect(msg).not.toContain("✗");
+  });
+
+  it("feedback names the square", () => {
+    const sq = "E4", actual = determineSquareColor("E4");
+    const msg = `Correct! ${sq} is ${actual}.`;
+    expect(msg).toContain("E4");
+  });
+
+  it("feedback names the actual color", () => {
+    const sq = "H8", actual = determineSquareColor("H8");
+    const msg = `Incorrect. ${sq} is ${actual}.`;
+    expect(msg).toContain(actual);
   });
 });
 
