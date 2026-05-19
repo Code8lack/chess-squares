@@ -158,10 +158,6 @@ function renderPlayerList() {
     guestRow.innerHTML = `<span class="player-name">👤 GUEST</span>
                           <span class="player-score">—</span>`;
     guestRow.onclick = () => {
-        if (currentPlayer && totalQuestions > 0) {
-            if (!confirm('Save current game and switch to Guest?')) return;
-            saveSession();
-        }
         saveCurrentPlayer();
         currentPlayer = null;
         correctAnswers = 0;
