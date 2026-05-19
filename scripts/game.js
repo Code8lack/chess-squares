@@ -297,7 +297,7 @@ function askNewQuestion(isNewGame = false) {
         setTimeout(() => squareNameEl.classList.add('square-new-game'), 10);
     }
     
-    feedbackMessageEl.innerHTML = "🤔 Black or White?";
+    feedbackMessageEl.innerHTML = "Can you guess? 🤔";
     feedbackMessageEl.className = "feedback-message";
     
     updateScoreDisplay();
