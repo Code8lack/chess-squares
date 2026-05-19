@@ -7,6 +7,7 @@ let timerDuration = 0;
 let timerRemaining = 0;
 let timerInterval = null;
 let nextQuestionTimeout = null;
+let isMuted = localStorage.getItem('chessSquares_mute') === 'true';
 
 
 // DOM elements
@@ -86,7 +87,7 @@ function newGame() {
 }
 
 function toggleMode() {
-    levelSound.play().catch(() => {});
+    if (!isMuted) clickSound.play().catch(() => {});
     const isBoardVisible = boardSvg.style.display !== 'none';
 
     if (isBoardVisible) {
@@ -330,7 +331,7 @@ function checkAnswer(userGuess) {
     
     // Play click sound immediately
     //clickSound.currentTime = 0;
-    clickSound.play().catch(() => {}); // ignore browser autoplay blocks
+    if (!isMuted) clickSound.play().catch(() => {}); // ignore browser autoplay blocks
 
     const actualColor = determineSquareColor(currentSquare);
     totalQuestions++;
@@ -420,9 +421,9 @@ function clearTimer() {
 
 function tickTimer() {
     timerRemaining--;
-    tickSound.play().catch(() => {});
+    if (!isMuted) clickSound.play().catch(() => {});
     if (timerRemaining <= 0) {
-        timerSound.play().catch(() => {});
+        if (!isMuted) clickSound.play().catch(() => {});
         scoreLabelEl.classList.add('score-label-expired');
         timerRemaining = 0;
         clearInterval(timerInterval);
@@ -438,6 +439,12 @@ function tickTimer() {
         return;
     }
     updateScoreDisplay();
+}
+
+function toggleMute() {
+    isMuted = !isMuted;
+    localStorage.setItem('chessSquares_mute', isMuted);
+    document.getElementById('muteBtn').textContent = isMuted ? '🔕 Sound: OFF' : '🔔 Sound: ON';
 }
 
 function formatTime(seconds) {
@@ -466,4 +473,6 @@ lightBtn.addEventListener('touchstart', (e) => {
 });
 
 // Start the game
+// Start the game
+document.getElementById('muteBtn').textContent = isMuted ? '🔕 Sound: OFF' : '🔔 Sound: ON';
 askNewQuestion();
