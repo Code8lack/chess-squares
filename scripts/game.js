@@ -121,6 +121,8 @@ function selectPlayer(name) {
     if (!players[name]) players[name] = { correct: 0, total: 0 };
     correctAnswers = players[name].correct;
     totalQuestions = players[name].total;
+    currentStreak = 0;
+    updateStreakDisplay();   
     clearInterval(timerInterval);
     timerInterval = null;
     timerDuration = 0;
@@ -420,6 +422,8 @@ function startTimer() {
     timerRemaining = timerDuration;
     correctAnswers = 0;
     totalQuestions = 0;
+    currentStreak = 0;
+    updateStreakDisplay();
     closeSettingsOverlay();
     timerInterval = setInterval(tickTimer, 1000);
     askNewQuestion(true);
