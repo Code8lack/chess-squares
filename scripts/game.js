@@ -437,7 +437,6 @@ function tickTimer() {
         updateScoreDisplay();
         return;
     }
-    timerRemaining--;
     updateScoreDisplay();
 }
 
