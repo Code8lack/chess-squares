@@ -421,9 +421,9 @@ function clearTimer() {
 
 function tickTimer() {
     timerRemaining--;
-    if (!isMuted) clickSound.play().catch(() => {});
+    if (!isMuted) tickSound.play().catch(() => {});
     if (timerRemaining <= 0) {
-        if (!isMuted) clickSound.play().catch(() => {});
+        if (!isMuted) timerSound.play().catch(() => {});
         scoreLabelEl.classList.add('score-label-expired');
         timerRemaining = 0;
         clearInterval(timerInterval);
@@ -454,12 +454,14 @@ function formatTime(seconds) {
 }
 
 // Event listeners
-darkBtn.addEventListener('click', () => checkAnswer("dark"));
-lightBtn.addEventListener('click', () => checkAnswer("light"));
+let lastTouch = 0;
+darkBtn.addEventListener('click', (e) => { if (Date.now() - lastTouch > 300) checkAnswer("dark"); });
+lightBtn.addEventListener('click', (e) => { if (Date.now() - lastTouch > 300) checkAnswer("light"); });
 
 // Touch optimization for mobile
 darkBtn.addEventListener('touchstart', (e) => {
     if (!darkBtn.disabled) {
+        lastTouch = Date.now();
         e.preventDefault();
         checkAnswer("dark");
     }
@@ -467,6 +469,7 @@ darkBtn.addEventListener('touchstart', (e) => {
 
 lightBtn.addEventListener('touchstart', (e) => {
     if (!lightBtn.disabled) {
+        lastTouch = Date.now();
         e.preventDefault();
         checkAnswer("light");
     }
