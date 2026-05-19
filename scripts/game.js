@@ -164,6 +164,8 @@ function renderPlayerList() {
         currentPlayer = null;
         correctAnswers = 0;
         totalQuestions = 0;
+        currentStreak = 0;
+        updateStreakDisplay();
         document.getElementById('playerBtn').textContent = '👤 GUEST';
         localStorage.removeItem('chessSquares_currentPlayer');
         updateScoreDisplay();
