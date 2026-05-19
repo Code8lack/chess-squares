@@ -699,7 +699,7 @@ body {
 }
 
 
-/* ====================== PINK / LAVENDER THEME ======================== */
+/* ====================== DATA THEMES/COLORS ======================== */
 
 [data-theme="pink"] {
     --theme-bg:        #f3e8ff;
@@ -735,6 +735,42 @@ body {
 [data-theme="pink"] .feedback-incorrect         { color: #9f1239; }
 [data-theme="pink"] .image-caption              { color: var(--theme-text); }
 [data-theme="pink"] #toast                      { background: #fce7f3; color: #6b21a8; }
+
+
+/* ===== MUSTARD THEME ===== */
+[data-theme="mustard"] {
+    --theme-bg:        #F5C400;
+    --theme-header-bg: #4a2800;
+    --theme-score-bg:  rgba(74,40,0,0.25);
+    --theme-square:    #FFE566;
+    --theme-btn-dark:  #4a2800;
+    --theme-btn-light: #FFF8DC;
+    --theme-text:      #3a1a00;
+    --theme-accent:    #F5C400;
+}
+
+[data-theme="mustard"] body {
+    background: linear-gradient(160deg, #0D6E6E 0%, #0a5555 40%, #073d3d 100%) fixed;
+}
+[data-theme="mustard"] .container,
+[data-theme="mustard"] .message-area,
+[data-theme="mustard"] .image-area,
+[data-theme="mustard"] .score-section              { background-color: var(--theme-bg); }
+[data-theme="mustard"] .app-header                 { background-color: var(--theme-header-bg); }
+[data-theme="mustard"] .app-header h1,
+[data-theme="mustard"] .subtitle                   { color: #F5C400; }
+[data-theme="mustard"] .score-label                { background-color: var(--theme-score-bg); color: var(--theme-text); }
+[data-theme="mustard"] .square-name                { background-color: var(--theme-square); color: var(--theme-text); }
+[data-theme="mustard"] .question-text              { color: var(--theme-text); }
+[data-theme="mustard"] .dark-btn                   { background-color: var(--theme-btn-dark); color: #F5C400; }
+[data-theme="mustard"] .light-btn                  { background-color: var(--theme-btn-light); color: var(--theme-text); }
+[data-theme="mustard"] .chess-btn:hover,
+[data-theme="mustard"] .settingsColumn button:hover { background: var(--theme-header-bg); color: #F5C400; }
+[data-theme="mustard"] .settingsColumn button      { background-color: rgba(74,40,0,0.12); color: var(--theme-text); border-color: #4a2800; }
+[data-theme="mustard"] .feedback-correct           { color: #1a4a00; }
+[data-theme="mustard"] .feedback-incorrect         { color: #8b0000; }
+[data-theme="mustard"] .image-caption              { color: var(--theme-text); }
+[data-theme="mustard"] #toast                      { background: #FFE566; color: var(--theme-text); }
 
 /* ===== CONFETTI BURST ===== */
 @keyframes confettiBurst {
