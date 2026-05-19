@@ -420,6 +420,7 @@ function clearTimer() {
 
 function tickTimer() {
     timerRemaining--;
+    tickSound.play().catch(() => {});
     if (timerRemaining <= 0) {
         timerSound.play().catch(() => {});
         scoreLabelEl.classList.add('score-label-expired');
