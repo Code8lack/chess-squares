@@ -211,6 +211,8 @@ function deletePlayer(name) {
         currentPlayer = null;
         correctAnswers = 0;
         totalQuestions = 0;
+        currentStreak = 0;
+        updateStreakDisplay();
         document.getElementById('playerBtn').textContent = '👤 GUEST';
         updateScoreDisplay();
     }
