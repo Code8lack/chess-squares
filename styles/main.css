@@ -71,6 +71,24 @@ body {
     display: inline-block;
 }
 
+.streak-badge {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(200, 80, 0, 0.7);
+    padding: 6px 16px;
+    border-radius: 40px;
+    display: inline-block;
+    margin-top: 8px;
+    animation: streakPop 0.3s ease;
+}
+
+@keyframes streakPop {
+    0%   { transform: scale(0.7); opacity: 0; }
+    70%  { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
 .square-display {
     background-color: rgba(100, 100, 100, 0.3);
     border-radius: 10px;

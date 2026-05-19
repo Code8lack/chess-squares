@@ -7,6 +7,7 @@ let timerDuration = 0;
 let timerRemaining = 0;
 let timerInterval = null;
 let nextQuestionTimeout = null;
+let currentStreak = 0;
 let isMuted = localStorage.getItem('chessSquares_mute') === 'true';
 
 
@@ -79,6 +80,8 @@ function newGame() {
     timerInterval = null;
     timerDuration = 0;
     timerRemaining = 0;
+    currentStreak = 0;
+    updateStreakDisplay();
     saveCurrentPlayer();
     updateScoreDisplay();
     clearTimeout(nextQuestionTimeout);
@@ -325,6 +328,19 @@ function spawnConfetti() {
     }
 }
 
+function updateStreakDisplay() {
+    const badge = document.getElementById('streakBadge');
+    const count = document.getElementById('streakCount');
+    if (currentStreak >= 3) {
+        count.textContent = currentStreak;
+        badge.style.display = 'inline-block';
+    } else {
+        badge.style.display = 'none';
+    }
+    const toasts = { 3: '🔥 3 in a row!', 5: '⚡ On fire!', 10: '🌟 Unstoppable!', 25: '👑 Chess genius!' };
+    if (toasts[currentStreak]) showToast(toasts[currentStreak]);
+}
+
 // Check user's answer
 function checkAnswer(userGuess) {
     if (isWaiting) return;
@@ -335,17 +351,20 @@ function checkAnswer(userGuess) {
 
     const actualColor = determineSquareColor(currentSquare);
     totalQuestions++;
-    
-if (userGuess === actualColor) {
+        
+    if (userGuess === actualColor) {
         feedbackMessageEl.innerHTML = `Correct! ${currentSquare} is ${actualColor}.`;
         feedbackMessageEl.className = "feedback-message feedback-correct";
         correctAnswers++;
+        currentStreak++;
         spawnConfetti();
     } else {
         feedbackMessageEl.innerHTML = `Incorrect. ${currentSquare} is ${actualColor}.`;
         feedbackMessageEl.className = "feedback-message feedback-incorrect";
+        currentStreak = 0;
     }
 
+    updateStreakDisplay();
     updateScoreDisplay();
     saveCurrentPlayer();
     setButtonsEnabled(false);
