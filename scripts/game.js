@@ -130,7 +130,6 @@ function selectPlayer(name) {
     totalQuestions = players[name].total;
     currentStreak = 0;
     peakStreak = 0;
-    sessionMode = 'Beginner';
     updateStreakDisplay();   
     clearInterval(timerInterval);
     timerInterval = null;
