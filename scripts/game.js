@@ -8,6 +8,8 @@ let timerRemaining = 0;
 let timerInterval = null;
 let nextQuestionTimeout = null;
 let currentStreak = 0;
+let peakStreak = 0;
+let sessionMode = 'Beginner';
 let isMuted = localStorage.getItem('chessSquares_mute') === 'true';
 
 
@@ -81,6 +83,8 @@ function newGame() {
     timerDuration = 0;
     timerRemaining = 0;
     currentStreak = 0;
+    peakStreak = 0;
+    sessionMode = 'Beginner';
     updateStreakDisplay();
     saveCurrentPlayer();
     updateScoreDisplay();
@@ -91,18 +95,18 @@ function newGame() {
 
 function toggleMode() {
     if (!isMuted) clickSound.play().catch(() => {});
-    const isBoardVisible = boardSvg.style.display !== 'none';
 
+    const isBoardVisible = boardSvg.style.display !== 'none';
     if (isBoardVisible) {
-        // Switch to Grandmaster Mode
         boardSvg.style.display = 'none';
         knightImg.style.display = 'block';
         imageCaption.textContent = 'Grandmaster Mode';
+        sessionMode = sessionMode === 'Beginner' ? 'Grandmaster' : 'Both';
     } else {
-        // Switch back to Beginner Mode
         boardSvg.style.display = 'block';
         knightImg.style.display = 'none';
         imageCaption.textContent = 'Beginner Mode';
+        sessionMode = sessionMode === 'Grandmaster' ? 'Both' : 'Beginner';
     }
 }
 
@@ -122,6 +126,8 @@ function selectPlayer(name) {
     correctAnswers = players[name].correct;
     totalQuestions = players[name].total;
     currentStreak = 0;
+    peakStreak = 0;
+    sessionMode = 'Beginner';
     updateStreakDisplay();   
     clearInterval(timerInterval);
     timerInterval = null;
@@ -359,6 +365,7 @@ function checkAnswer(userGuess) {
         feedbackMessageEl.className = "feedback-message feedback-correct";
         correctAnswers++;
         currentStreak++;
+        if (currentStreak > peakStreak) peakStreak = currentStreak;
         spawnConfetti();
     } else {
         feedbackMessageEl.innerHTML = `Incorrect. ${currentSquare} is ${actualColor}.`;
@@ -427,6 +434,8 @@ function startTimer() {
     correctAnswers = 0;
     totalQuestions = 0;
     currentStreak = 0;
+    peakStreak = 0;
+    sessionMode = 'Beginner';
     updateStreakDisplay();
     closeSettingsOverlay();
     timerInterval = setInterval(tickTimer, 1000);
