@@ -41,6 +41,9 @@ if (savedPlayer && players[savedPlayer]) {
 }
 
 const HISTORY_KEY = 'chessSquares_history';
+const HS_TIMED_KEY   = 'chessSquares_hs_timed';
+const HS_UNTIMED_KEY = 'chessSquares_hs_untimed';
+const HS_ALLTIME_KEY = 'chessSquares_hs_alltime';
 
 // Theme
 const THEME_KEY = 'chessSquares_theme';
@@ -249,14 +252,33 @@ function generateRandomSquare() {
 
 function saveSession() {
     if (!currentPlayer || totalQuestions === 0) return false;
+
+    const category = timerDuration > 0 ? 'timed' : 'untimed';
+    const hsKey = category === 'timed' ? HS_TIMED_KEY : HS_UNTIMED_KEY;
+    const currentHS = JSON.parse(localStorage.getItem(hsKey) || 'null');
+    const allTimeHS = JSON.parse(localStorage.getItem(HS_ALLTIME_KEY) || 'null');
+
+    const beatsCategoryHS = peakStreak > 5 && (!currentHS || peakStreak > currentHS.peakStreak);
+    const beatsAllTimeHS  = peakStreak > 5 && (!allTimeHS  || peakStreak > allTimeHS.peakStreak);
+
+    const entry = {
+        player:     currentPlayer,
+        correct:    correctAnswers,
+        total:      totalQuestions,
+        peakStreak: peakStreak,
+        mode:       sessionMode,
+        category:   category,
+        duration:   category === 'timed' ? timerDuration - timerRemaining : null,
+        date:       new Date().toISOString(),
+        isRecord:   beatsCategoryHS,
+        isAllTime:  beatsAllTimeHS
+    };
+
+    if (beatsCategoryHS) localStorage.setItem(hsKey, JSON.stringify(entry));
+    if (beatsAllTimeHS)  localStorage.setItem(HS_ALLTIME_KEY, JSON.stringify(entry));
+
     const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
-    history.push({
-        player: currentPlayer,
-        correct: correctAnswers,
-        total: totalQuestions,
-        duration: timerDuration > 0 ? timerDuration - timerRemaining : null,
-        date: new Date().toISOString()
-    });
+    history.push(entry);
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
     return true;
 }
