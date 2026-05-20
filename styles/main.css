@@ -16,6 +16,15 @@ body {
     padding: 20px;
 }
 
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url('../assets/float-pieces01.png') center/cover no-repeat;
+    opacity: 0.2;
+    z-index: -1;
+}
+
 .container {
     max-width: 500px;
     width: 100%;
@@ -49,6 +58,13 @@ body {
     font-size: 1.8rem;
     letter-spacing: 2px;
     font-weight: bold;
+}
+
+.separator {
+    position: relative;
+    background-color: indianred;
+    height: 4px;
+    width: 100%;
 }
 
 .subtitle {
@@ -739,6 +755,7 @@ body {
 [data-theme="pink"] .image-area,
 [data-theme="pink"] .score-section              { background-color: var(--theme-bg); }
 [data-theme="pink"] .app-header                 { background-color: var(--theme-header-bg); }
+[data-theme="pink"] .separator                  { background-color: lightpink;}
 [data-theme="pink"] .app-header h1,
 [data-theme="pink"] .subtitle                   { color: #f3e8ff; }
 [data-theme="pink"] .score-label                { background-color: var(--theme-score-bg); color: var(--theme-text); }
@@ -775,6 +792,7 @@ body {
 [data-theme="mustard"] .image-area,
 [data-theme="mustard"] .score-section              { background-color: var(--theme-bg); }
 [data-theme="mustard"] .app-header                 { background-color: var(--theme-header-bg); }
+[data-theme="mustard"] .separator                  { background-color: #F5DF1D;}
 [data-theme="mustard"] .app-header h1,
 [data-theme="mustard"] .subtitle                   { color: #F5C400; }
 [data-theme="mustard"] .score-label                { background-color: var(--theme-score-bg); color: var(--theme-text); }
