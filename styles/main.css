@@ -7,7 +7,7 @@
 }
 
 body {
-    font-family: 'Quicksand', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Nunito', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background: linear-gradient(160deg, #e0f7fa 0%, #80deea 40%, #26c6da 100%) fixed;
     min-height: 100vh;
     display: flex;

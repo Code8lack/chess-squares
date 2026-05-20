@@ -437,7 +437,7 @@ function renderHistory() {
     }
 
     recordsEl.innerHTML = `
-        <div class="records-title">🏆 HIGH SCORES</div>
+        <div class="records-title">🏆 HIGH SCORE STREAK</div>
         ${(hsTimed?.peakStreak || 0) >= (hsUntimed?.peakStreak || 0)
         ? recordRow('TIMED', hsTimed) + recordRow('UNTIMED', hsUntimed)
         : recordRow('UNTIMED', hsUntimed) + recordRow('TIMED', hsTimed)}
