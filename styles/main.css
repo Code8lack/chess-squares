@@ -29,7 +29,6 @@ body::before {
     max-width: 500px;
     width: 100%;
     margin: 0 auto;
-    background-color: slategray;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     border: 2px solid indianred;
@@ -38,10 +37,13 @@ body::before {
 
 .container,
     .message-area,
-        .image-area,
-            .score-section {
+        .score-section {
         background-color: darkorange;
     }
+
+.image-area {
+    background: linear-gradient(180deg, darkorange, #E65B29);
+}
 
 .app-header h1,
     .subtitle {
@@ -783,9 +785,9 @@ body::before {
 [data-theme="pink"] body {
   background: linear-gradient(160deg, #ff9ecb 0%, #ad9afa 40%, #7691fc 100%) fixed;
 }
+[data-theme="pink"] .image-area { background: linear-gradient(180deg, var(--theme-bg), #CC9EE6); }
 [data-theme="pink"] .container,
 [data-theme="pink"] .message-area,
-[data-theme="pink"] .image-area,
 [data-theme="pink"] .score-section              { background-color: var(--theme-bg); }
 [data-theme="pink"] .app-header                 { background-color: var(--theme-header-bg); }
 [data-theme="pink"] .separator                  { background-color: lightpink;}
@@ -820,9 +822,9 @@ body::before {
 [data-theme="mustard"] body {
     background: linear-gradient(160deg, #0D6E6E 0%, #0a5555 40%, #073d3d 100%) fixed;
 }
+[data-theme="mustard"] .image-area { background: linear-gradient(180deg, #F5C400, #a07800); }
 [data-theme="mustard"] .container,
 [data-theme="mustard"] .message-area,
-[data-theme="mustard"] .image-area,
 [data-theme="mustard"] .score-section              { background-color: var(--theme-bg); }
 [data-theme="mustard"] .app-header                 { background-color: var(--theme-header-bg); }
 [data-theme="mustard"] .separator                  { background-color: #F5DF1D;}
