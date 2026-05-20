@@ -9,7 +9,6 @@ let timerInterval = null;
 let nextQuestionTimeout = null;
 let currentStreak = 0;
 let peakStreak = 0;
-let sessionMode = 'Beginner';
 let isMuted = localStorage.getItem('chessSquares_mute') === 'true';
 
 
@@ -87,7 +86,6 @@ function newGame() {
     timerRemaining = 0;
     currentStreak = 0;
     peakStreak = 0;
-    sessionMode = 'Beginner';
     updateStreakDisplay();
     saveCurrentPlayer();
     updateScoreDisplay();
@@ -104,13 +102,17 @@ function toggleMode() {
         boardSvg.style.display = 'none';
         knightImg.style.display = 'block';
         imageCaption.textContent = 'Grandmaster Mode';
-        sessionMode = sessionMode === 'Beginner' ? 'Grandmaster' : 'Both';
+        sessionMode = isBoardVisible ? 'Grandmaster' : 'Beginner';
     } else {
         boardSvg.style.display = 'block';
         knightImg.style.display = 'none';
         imageCaption.textContent = 'Beginner Mode';
-        sessionMode = sessionMode === 'Grandmaster' ? 'Both' : 'Beginner';
+        sessionMode = isBoardVisible ? 'Grandmaster' : 'Beginner';
     }
+}
+
+function currentMode() {
+    return boardSvg.style.display === 'none' ? 'Grandmaster' : 'Beginner';
 }
 
 function selectPlayer(name) {
@@ -263,7 +265,7 @@ function saveSession() {
         correct:    correctAnswers,
         total:      totalQuestions,
         peakStreak: peakStreak,
-        mode:       sessionMode,
+        mode:       currentMode(),
         category:   category,
         duration:   category === 'timed' ? timerDuration - timerRemaining : null,
         date:       new Date().toISOString(),
@@ -507,7 +509,6 @@ function startTimer() {
     totalQuestions = 0;
     currentStreak = 0;
     peakStreak = 0;
-    sessionMode = 'Beginner';
     updateStreakDisplay();
     closeSettingsOverlay();
     timerInterval = setInterval(tickTimer, 1000);
