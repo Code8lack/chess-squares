@@ -276,9 +276,10 @@ function saveSession() {
 
     const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
     history.push(entry);
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-    return true;
-}
+        if (history.length > 10) history.splice(0, history.length - 10);
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        return true;
+    }
 
 function showToast(msg = '✦ New Game ✦') {
     let toast = document.getElementById('toast');
