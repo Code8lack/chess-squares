@@ -255,10 +255,8 @@ function saveSession() {
     const category = timerDuration > 0 ? 'timed' : 'untimed';
     const hsKey = category === 'timed' ? HS_TIMED_KEY : HS_UNTIMED_KEY;
     const currentHS = JSON.parse(localStorage.getItem(hsKey) || 'null');
-    const allTimeHS = JSON.parse(localStorage.getItem(HS_ALLTIME_KEY) || 'null');
 
     const beatsCategoryHS = peakStreak > 5 && (!currentHS || peakStreak > currentHS.peakStreak);
-    const beatsAllTimeHS  = peakStreak > 5 && (!allTimeHS  || peakStreak > allTimeHS.peakStreak);
 
     const entry = {
         player:     currentPlayer,
@@ -270,11 +268,9 @@ function saveSession() {
         duration:   category === 'timed' ? timerDuration - timerRemaining : null,
         date:       new Date().toISOString(),
         isRecord:   beatsCategoryHS,
-        isAllTime:  beatsAllTimeHS
     };
 
     if (beatsCategoryHS) localStorage.setItem(hsKey, JSON.stringify(entry));
-    if (beatsAllTimeHS)  localStorage.setItem(HS_ALLTIME_KEY, JSON.stringify(entry));
 
     const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
     history.push(entry);
@@ -442,9 +438,9 @@ function renderHistory() {
 
     recordsEl.innerHTML = `
         <div class="records-title">🏆 HIGH SCORES</div>
-        ${recordRow('ALL TIME', hsAllTime)}
-        ${recordRow('TIMED', hsTimed)}
-        ${recordRow('UNTIMED', hsUntimed)}
+        ${(hsTimed?.peakStreak || 0) >= (hsUntimed?.peakStreak || 0)
+        ? recordRow('TIMED', hsTimed) + recordRow('UNTIMED', hsUntimed)
+        : recordRow('UNTIMED', hsUntimed) + recordRow('TIMED', hsTimed)}
     `;
     list.appendChild(recordsEl);
 
@@ -455,11 +451,7 @@ function renderHistory() {
 
     // Sort: record-beaters first, then by date descending
     const sorted = [...history].map((e, i) => ({ ...e, _idx: i }))
-        .sort((a, b) => {
-            if (b.isAllTime !== a.isAllTime) return (b.isAllTime ? 1 : 0) - (a.isAllTime ? 1 : 0);
-            if (b.isRecord  !== a.isRecord)  return (b.isRecord  ? 1 : 0) - (a.isRecord  ? 1 : 0);
-            return new Date(b.date) - new Date(a.date);
-        });
+        .sort((a, b) => (b.peakStreak || 0) - (a.peakStreak || 0));
 
     const sessionsList = document.createElement('div');
     sessionsList.className = 'history-sessions';
@@ -473,9 +465,7 @@ function renderHistory() {
         const streak   = s.peakStreak > 5 ? `🔥 ${s.peakStreak}` : '—';
 
         const row = document.createElement('div');
-        row.className = 'history-row' +
-            (s.isAllTime ? ' history-alltime' : s.isRecord ? ' history-record' : '');
-
+        
         row.innerHTML = `
             <div class="history-row-main">
                 <span class="history-player">${s.player ? s.player.toUpperCase() : 'GUEST'}</span>
