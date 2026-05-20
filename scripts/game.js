@@ -185,7 +185,7 @@ function renderPlayerList() {
         const row = document.createElement('div');
         row.className = 'player-row' + (name === currentPlayer ? ' active' : '');
         row.innerHTML = `<span class="player-name">${name}</span>
-                         <span class="player-score">${p.correct}/${p.total} (${pct}%)</span>`;
+                        <span class="player-score">${p.correct}/${p.total}</span>`
         row.onclick = () => selectPlayer(name);
 
         const deleteBtn = document.createElement('button');
@@ -254,7 +254,6 @@ function saveSession() {
         player: currentPlayer,
         correct: correctAnswers,
         total: totalQuestions,
-        pct: Math.round(correctAnswers / totalQuestions * 100),
         duration: timerDuration > 0 ? timerDuration - timerRemaining : null,
         date: new Date().toISOString()
     });
@@ -411,7 +410,7 @@ function renderHistory() {
         const row = document.createElement('div');
         row.className = 'history-row';
                         row.innerHTML = `<span class="history-player">${s.player.toUpperCase()}</span>
-                         <span class="history-score">${s.correct}/${s.total} (${s.pct}%)</span>
+                         <span class="history-score">${s.correct}/${s.total})</span>
                          <span class="history-duration">${duration}</span>
                          <span class="history-date">${date}</span>`;
         list.appendChild(row);
