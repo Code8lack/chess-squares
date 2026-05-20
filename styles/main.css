@@ -521,6 +521,13 @@ body::before {
 
 /* ============================= RECORDS ===================================== */
 
+
+.records-title {
+    color: white;
+    margin-bottom: 10px;
+}
+
+
 .record-row {
     background: lightgoldenrodyellow;
     display: grid;
@@ -561,7 +568,11 @@ body::before {
 .history-player { color: #fff; font-weight: bold; }
 .history-score { color: #4CAF50; text-align: right; }
 .history-duration { color: #aaa; }
-.history-date { color: #666; text-align: right; font-size: 0.75rem; }
+.history-date {
+    color: #666;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
 
 .no-history { color: #666; font-size: 0.9rem; }
 

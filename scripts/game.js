@@ -442,7 +442,7 @@ function renderHistory() {
     }
 
     recordsEl.innerHTML = `
-        <div class="records-title">HIGH SCORES</div>
+        <div class="records-title">🏆 HIGH SCORES</div>
         ${recordRow('ALL TIME', hsAllTime)}
         ${recordRow('TIMED', hsTimed)}
         ${recordRow('UNTIMED', hsUntimed)}
@@ -466,10 +466,10 @@ function renderHistory() {
     sessionsList.className = 'history-sessions';
 
     for (const s of sorted) {
-        const date = new Date(s.date).toLocaleDateString('en-GB', {
+         const date = new Date(s.date).toLocaleDateString('en-GB', {
             day: 'numeric', month: 'short',
             hour: '2-digit', minute: '2-digit'
-        });
+        }).replace(',', '');
         const duration = s.duration ? formatTime(s.duration) : '—';
         const streak   = s.peakStreak > 5 ? `🔥 ${s.peakStreak}` : '—';
 
