@@ -417,26 +417,93 @@ function closeSettingsOverlay() {
 
 function renderHistory() {
     const list = document.getElementById('historyList');
-    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]').reverse();
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+
+    const hsAllTime = JSON.parse(localStorage.getItem(HS_ALLTIME_KEY) || 'null');
+    const hsTimed   = JSON.parse(localStorage.getItem(HS_TIMED_KEY)   || 'null');
+    const hsUntimed = JSON.parse(localStorage.getItem(HS_UNTIMED_KEY) || 'null');
+
+    list.innerHTML = '';
+
+    // --- High score records block ---
+    const recordsEl = document.createElement('div');
+    recordsEl.className = 'history-records';
+
+    function recordRow(label, hs) {
+        if (!hs) return `<div class="record-row"><span class="record-label">${label}</span><span class="record-empty">—</span></div>`;
+        const dur = hs.duration ? formatTime(hs.duration) : '—';
+        return `<div class="record-row record-highlight">
+            <span class="record-label">${label}</span>
+            <span class="record-player">${hs.player.toUpperCase()}</span>
+            <span class="record-streak">🔥 ${hs.peakStreak}</span>
+            <span class="record-mode">${hs.mode}</span>
+            <span class="record-duration">${dur}</span>
+        </div>`;
+    }
+
+    recordsEl.innerHTML = `
+        <div class="records-title">HIGH SCORES</div>
+        ${recordRow('ALL TIME', hsAllTime)}
+        ${recordRow('TIMED', hsTimed)}
+        ${recordRow('UNTIMED', hsUntimed)}
+    `;
+    list.appendChild(recordsEl);
+
     if (history.length === 0) {
-        list.innerHTML = '<p class="no-history">No sessions yet.</p>';
+        list.innerHTML += '<p class="no-history">No sessions yet.</p>';
         return;
     }
-    list.innerHTML = '';
-    for (const s of history) {
+
+    // Sort: record-beaters first, then by date descending
+    const sorted = [...history].map((e, i) => ({ ...e, _idx: i }))
+        .sort((a, b) => {
+            if (b.isAllTime !== a.isAllTime) return (b.isAllTime ? 1 : 0) - (a.isAllTime ? 1 : 0);
+            if (b.isRecord  !== a.isRecord)  return (b.isRecord  ? 1 : 0) - (a.isRecord  ? 1 : 0);
+            return new Date(b.date) - new Date(a.date);
+        });
+
+    const sessionsList = document.createElement('div');
+    sessionsList.className = 'history-sessions';
+
+    for (const s of sorted) {
         const date = new Date(s.date).toLocaleDateString('en-GB', {
-            day: 'numeric', month: 'short', year: 'numeric',
+            day: 'numeric', month: 'short',
             hour: '2-digit', minute: '2-digit'
         });
         const duration = s.duration ? formatTime(s.duration) : '—';
+        const streak   = s.peakStreak > 5 ? `🔥 ${s.peakStreak}` : '—';
+
         const row = document.createElement('div');
-        row.className = 'history-row';
-                        row.innerHTML = `<span class="history-player">${s.player.toUpperCase()}</span>
-                         <span class="history-score">${s.correct}/${s.total})</span>
-                         <span class="history-duration">${duration}</span>
-                         <span class="history-date">${date}</span>`;
-        list.appendChild(row);
+        row.className = 'history-row' +
+            (s.isAllTime ? ' history-alltime' : s.isRecord ? ' history-record' : '');
+
+        row.innerHTML = `
+            <div class="history-row-main">
+                <span class="history-player">${s.player ? s.player.toUpperCase() : 'GUEST'}</span>
+                <span class="history-score">${s.correct}/${s.total}</span>
+                <span class="history-streak">${streak}</span>
+                <span class="history-mode">${s.mode || '—'}</span>
+                <span class="history-duration">${duration}</span>
+                <span class="history-date">${date}</span>
+            </div>
+            <button class="delete-history-btn" data-idx="${s._idx}">✕</button>
+        `;
+
+        row.querySelector('.delete-history-btn').addEventListener('click', () => {
+            deleteHistoryEntry(s._idx);
+        });
+
+        sessionsList.appendChild(row);
     }
+
+    list.appendChild(sessionsList);
+}
+
+function deleteHistoryEntry(idx) {
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    history.splice(idx, 1);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    renderHistory();
 }
 
 function clearHistory() {
@@ -528,7 +595,6 @@ lightBtn.addEventListener('touchstart', (e) => {
     }
 });
 
-// Start the game
 // Start the game
 document.getElementById('muteBtn').textContent = isMuted ? '🔕 Sound: OFF' : '🔔 Sound: ON';
 askNewQuestion();

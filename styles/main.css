@@ -519,10 +519,29 @@ body::before {
 
 #noTimerBtn:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
 
+/* ============================= RECORDS ===================================== */
+
+.record-row {
+    background: lightgoldenrodyellow;
+    display: grid;
+    grid-template-columns: 60px 1fr auto auto auto;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.82rem;
+    padding: 6px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+
+
+
+/* ============================= HISTORY ===================================== */
+
 #historyList {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
     max-height: 240px;
     overflow-y: auto;
 }
@@ -531,9 +550,11 @@ body::before {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2px 8px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.5);
+    border: 1px solid #444;
     border-radius: 6px;
     padding: 8px 10px;
+    margin-bottom: 10px;
     font-size: 0.85rem;
 }
 
@@ -555,6 +576,24 @@ body::before {
 }
 
 #clearHistoryBtn:hover { background: rgba(205,92,92,0.15); }
+
+.delete-history-btn {
+    background: none;
+    border: none;
+    color: whitesmoke;
+    cursor: pointer;
+    font-size: 1rem;
+    position: relative;
+    margin-left: 100px;
+    width: 25px;
+    padding: 2px 4px;
+    line-height: 1;
+    flex-shrink: 0;
+    align-self: center;
+    transition: color 0.15s;
+}
+
+.delete-history-btn:hover { color: indianred; }
 
 #closeSettingsPanel {
     position: absolute;
