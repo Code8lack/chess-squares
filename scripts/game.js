@@ -257,9 +257,7 @@ function saveSession() {
     const category = timerDuration > 0 ? 'timed' : 'untimed';
     const hsKey = category === 'timed' ? HS_TIMED_KEY : HS_UNTIMED_KEY;
     const currentHS = JSON.parse(localStorage.getItem(hsKey) || 'null');
-
-    const beatsCategoryHS = peakStreak > 5 && (!currentHS || peakStreak > currentHS.peakStreak);
-
+    const beatsCategoryHS = peakStreak > 5 && (!currentHS || peakStreak >= currentHS.peakStreak);
     const entry = {
         player:     currentPlayer,
         correct:    correctAnswers,
