@@ -468,7 +468,6 @@ function renderHistory() {
         
         row.innerHTML = `
             <div class="history-row-main">
-                <button class="delete-history-btn" data-idx="${s._idx}">✕</button>
                 <span class="history-player">${s.player ? s.player.toUpperCase() : 'GUEST'}</span>
                 <span class="history-score">${s.correct}/${s.total}</span>
                 <span class="history-streak">${streak}</span>
@@ -477,10 +476,6 @@ function renderHistory() {
                 <span class="history-date">${date}</span>
             </div>
         `;
-
-        row.querySelector('.delete-history-btn').addEventListener('click', () => {
-            deleteHistoryEntry(s._idx);
-        });
 
         sessionsList.appendChild(row);
     }
