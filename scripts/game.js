@@ -9,6 +9,7 @@ let timerInterval = null;
 let nextQuestionTimeout = null;
 let currentStreak = 0;
 let peakStreak = 0;
+let confettiInterval = null;
 let isMuted = localStorage.getItem('chessSquares_mute') === 'true';
 
 
@@ -77,6 +78,8 @@ function closeSettingsSub() {
 
 function newGame() {
     saveSession();
+    clearInterval(confettiInterval);
+    confettiInterval = null;
     scoreLabelEl.classList.remove('score-label-expired');
     correctAnswers = 0;
     totalQuestions = 0;
@@ -353,6 +356,28 @@ function spawnConfetti() {
     }
 }
 
+function spawnConfettiOnScore() {
+    const particles = ['✦','✧','★','✿','♦','·','❋'];
+    const colors = ['#f472b6','#a78bfa','#60a5fa','#34d399','#fbbf24','#f87171'];
+    const rect = scoreLabelEl.getBoundingClientRect();
+    const container = document.querySelector('.score-section');
+    const containerRect = container.getBoundingClientRect();
+    for (let i = 0; i < 8; i++) {
+        const el = document.createElement('span');
+        el.className = 'confetti-particle';
+        el.textContent = particles[Math.floor(Math.random() * particles.length)];
+        el.style.color = colors[Math.floor(Math.random() * colors.length)];
+        el.style.left = (rect.left - containerRect.left + Math.random() * rect.width) + 'px';
+        el.style.top  = (rect.top  - containerRect.top  + Math.random() * rect.height) + 'px';
+        el.style.setProperty('--dx', (Math.random() * 160 - 80) + 'px');
+        el.style.setProperty('--dy', (Math.random() * -100 - 20) + 'px');
+        el.style.animationDelay = (Math.random() * 0.3) + 's';
+        container.style.position = 'relative';
+        container.appendChild(el);
+        el.addEventListener('animationend', () => el.remove());
+    }
+}
+
 function updateStreakDisplay() {
     const inlineBadge = document.getElementById('streakBadgeInline');
     const inlineCount = document.getElementById('streakCountInline');
@@ -536,6 +561,8 @@ function tickTimer() {
         isWaiting = true;
         setButtonsEnabled(false);
         saveSession();
+        confettiInterval = setInterval(spawnConfettiOnScore, 600);
+        setTimeout(() => { clearInterval(confettiInterval); confettiInterval = null; }, 30000);
         feedbackMessageEl.textContent = "⏰ Time's Up!";
         feedbackMessageEl.className = "feedback-message feedback-incorrect";
         updateScoreDisplay();
