@@ -95,22 +95,6 @@ body::before {
     display: inline-block;
 }
 
-.streak-badge {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #fff;
-    background: rgba(200, 80, 0, 0.7);
-    padding: 6px 16px;
-    border-radius: 40px;
-    display: inline-block;
-    position: absolute; 
-    left: 50%;           
-    transform: translateX(-50%);  
-    bottom: -8px;      
-    margin-top: 0;       
-    animation: streakPop 0.3s ease;
-    visibility: hidden;
-}
 
 @keyframes streakPop {
     0%   { transform: translateY(-50%) scale(0.7); opacity: 0; }
@@ -138,12 +122,7 @@ body::before {
     min-width: 200px;
     font-family: 'Courier New', monospace;
     letter-spacing: 4px;
-}
-
-.question-text {
-    font-size: 1.2rem;
-    color: #333333;
-    margin-top: 10px;
+    margin-left: 80px;
 }
 
 .button-container {
@@ -329,17 +308,27 @@ body::before {
 
 
 @media (min-width: 481px) {
-    .streak-badge {
-        position: absolute;
-        left: calc(100% + 10px);
-        top: 50%;
-        bottom: auto;
-        transform: translateY(-50%);
-        white-space: nowrap;
+
+   .square-display {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
     }
+
+    .streak-badge-inline {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #fff;
+        background: rgba(200, 80, 0, 0.7);
+        padding: 6px 16px;
+        border-radius: 40px;
+    }
+
 }
 
 /* ===== HANDHELD MEDIA (MOBILE, TABLET) @media (max-width: 480px) block ===== */
+
 @media (max-width: 480px) {
     body {
         padding: 10px;
@@ -349,20 +338,32 @@ body::before {
         border-radius: 12px;
     }
 
-    .score-label {
-        margin-bottom: 30px;
+   .square-display {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 10px;
     }
-
-    .streak-badge {
-        top: auto;
-        bottom: -15px;
-        left: 50%;
-        transform: translateX(-50%);
-    }    
 
     .square-name {
         font-size: 3rem;
         min-width: 150px;
+        margin:0 auto;
+    }
+
+
+    .streak-badge-inline {
+        position: static; 
+        width: fit-content; 
+        font-size: 0.75em;
+        font-weight: bold;
+        color: floralwhite;
+        background: rgba(200, 80, 0, 0.7);
+        padding: 6px 16px;
+        border-radius: 40px;
+        display: block;
+        margin: 20px auto 0;
+        animation: streakPop 0.3s ease;
+        visibility: hidden;
     }
 
     .button-container {

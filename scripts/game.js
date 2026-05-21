@@ -326,7 +326,7 @@ function askNewQuestion(isNewGame = false) {
         setTimeout(() => squareNameEl.classList.add('square-new-game'), 10);
     }
     
-    feedbackMessageEl.innerHTML = "Can you guess? 🤔";
+    feedbackMessageEl.innerHTML = "Dark or Light? 🤔";
     feedbackMessageEl.className = "feedback-message";
     
     updateScoreDisplay();
@@ -354,13 +354,13 @@ function spawnConfetti() {
 }
 
 function updateStreakDisplay() {
-    const badge = document.getElementById('streakBadge');
-    const count = document.getElementById('streakCount');
+    const inlineBadge = document.getElementById('streakBadgeInline');
+    const inlineCount = document.getElementById('streakCountInline');
     if (currentStreak >= 3) {
-        count.textContent = currentStreak;
-        badge.style.visibility = 'visible';
+        inlineCount.textContent = currentStreak;
+        inlineBadge.style.visibility = 'visible';
     } else {
-        badge.style.visibility = 'hidden'; 
+        inlineBadge.style.visibility = 'hidden';
     }
     const toasts = { 3: '🔥 3 in a row!', 5: '⚡ On fire!', 10: '🌟 Unstoppable!', 25: '👑 Chess genius!' };
     if (toasts[currentStreak]) showToast(toasts[currentStreak]);
