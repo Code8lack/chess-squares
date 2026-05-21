@@ -20,7 +20,7 @@ body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: url('../assets/float-pieces01.png') center/cover no-repeat;
+    background: url('../assets/float-pieces02.png') center/cover no-repeat;
     opacity: 0.2;
     z-index: -1;
 }
