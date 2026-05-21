@@ -9,6 +9,7 @@ let timerInterval = null;
 let nextQuestionTimeout = null;
 let currentStreak = 0;
 let peakStreak = 0;
+let lastSquare = "";
 let confettiInterval = null;
 let isMuted = localStorage.getItem('chessSquares_mute') === 'true';
 
@@ -251,7 +252,10 @@ function determineSquareColor(squareName) {
 function generateRandomSquare() {
     const columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
     const rows = ['1', '2', '3', '4', '5', '6', '7', '8'];
-    return columns[Math.floor(Math.random() * 8)] + rows[Math.floor(Math.random() * 8)];
+    const sq = columns[Math.floor(Math.random() * 8)] + rows[Math.floor(Math.random() * 8)];
+    if (sq === lastSquare) return generateRandomSquare();
+    lastSquare = sq;
+    return sq;
 }
 
 function saveSession() {
