@@ -358,9 +358,9 @@ function updateStreakDisplay() {
     const count = document.getElementById('streakCount');
     if (currentStreak >= 3) {
         count.textContent = currentStreak;
-        badge.style.display = 'inline-block';
+        badge.style.visibility = 'visible';
     } else {
-        badge.style.display = 'none';
+        badge.style.visibility = 'hidden'; 
     }
     const toasts = { 3: '🔥 3 in a row!', 5: '⚡ On fire!', 10: '🌟 Unstoppable!', 25: '👑 Chess genius!' };
     if (toasts[currentStreak]) showToast(toasts[currentStreak]);
@@ -371,7 +371,6 @@ function checkAnswer(userGuess) {
     if (isWaiting) return;
     
     // Play click sound immediately
-    //clickSound.currentTime = 0;
     if (!isMuted) clickSound.play().catch(() => {}); // ignore browser autoplay blocks
 
     const actualColor = determineSquareColor(currentSquare);
