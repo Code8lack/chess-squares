@@ -53,6 +53,29 @@ const THEME_KEY = 'chessSquares_theme';
     if (t) document.documentElement.setAttribute('data-theme', t);
 })();
 
+function newGame() {
+    saveSession();
+    if (!isMuted) newSound.play().catch(() => {});
+    clearInterval(confettiInterval);
+    confettiInterval = null;
+    scoreLabelEl.classList.remove('score-label-expired');
+    correctAnswers = 0;
+    totalQuestions = 0;
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerDuration = 0;
+    timerRemaining = 0;
+    currentStreak = 0;
+    peakStreak = 0;
+    updateStreakDisplay();
+    saveCurrentPlayer();
+    updateScoreDisplay();
+    clearTimeout(nextQuestionTimeout);
+    nextQuestionTimeout = null;
+    askNewQuestion(true);
+}
+
+
 function setTheme(name) {
     document.documentElement.setAttribute('data-theme', name);
     if (name) localStorage.setItem(THEME_KEY, name);
@@ -77,29 +100,8 @@ function closeSettingsSub() {
     document.getElementById('settingsPanelTitle').textContent = 'Settings';
 }
 
-function newGame() {
-    saveSession();
-    clearInterval(confettiInterval);
-    confettiInterval = null;
-    scoreLabelEl.classList.remove('score-label-expired');
-    correctAnswers = 0;
-    totalQuestions = 0;
-    clearInterval(timerInterval);
-    timerInterval = null;
-    timerDuration = 0;
-    timerRemaining = 0;
-    currentStreak = 0;
-    peakStreak = 0;
-    updateStreakDisplay();
-    saveCurrentPlayer();
-    updateScoreDisplay();
-    clearTimeout(nextQuestionTimeout);
-    nextQuestionTimeout = null;
-    askNewQuestion(true);
-}
-
 function toggleMode() {
-    if (!isMuted) clickSound.play().catch(() => {});
+    if (!isMuted) toggleSound.play().catch(() => {});
 
     const isBoardVisible = boardSvg.style.display !== 'none';
     if (isBoardVisible) {
