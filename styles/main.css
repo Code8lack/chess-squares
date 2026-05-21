@@ -74,6 +74,11 @@ body::before {
     margin-top: 5px;
 }
 
+.score-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
 .score-section {
     padding: 20px;
     text-align: center;
@@ -108,9 +113,9 @@ body::before {
 }
 
 @keyframes streakPop {
-    0%   { transform: scale(0.7); opacity: 0; }
-    70%  { transform: scale(1.15); }
-    100% { transform: scale(1); opacity: 1; }
+    0%   { transform: translateY(-50%) scale(0.7); opacity: 0; }
+    70%  { transform: translateY(-50%) scale(1.15); }
+    100% { transform: translateY(-50%) scale(1); opacity: 1; }
 }
 
 .square-display {
@@ -322,7 +327,19 @@ body::before {
     transition: background-color 0.2s ease;
 }
 
-/* ===== SINGLE @media (max-width: 480px) block ===== */
+
+@media (min-width: 481px) {
+    .streak-badge {
+        position: absolute;
+        left: calc(100% + 10px);
+        top: 50%;
+        bottom: auto;
+        transform: translateY(-50%);
+        white-space: nowrap;
+    }
+}
+
+/* ===== HANDHELD MEDIA (MOBILE, TABLET) @media (max-width: 480px) block ===== */
 @media (max-width: 480px) {
     body {
         padding: 10px;
@@ -337,7 +354,10 @@ body::before {
     }
 
     .streak-badge {
-        bottom: 3px;
+        top: auto;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
     }    
 
     .square-name {
