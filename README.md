@@ -1,6 +1,6 @@
 # ♞ Chess Squares
 
-A simple web app to train chessboard square color recognition. Learn which squares are dark and light on a chessboard.
+A simple web app to train chessboard square color recognition. Learn which squares are dark and light on a chessboard. A 10th birthday gift for my chess genius niece!
 
 ## 🎯 How to Play
 
@@ -12,6 +12,15 @@ A simple web app to train chessboard square color recognition. Learn which squar
 ## 🧠 Why?
 
 Chess notation requires knowing square colors quickly. This trainer helps build that intuition.
+
+## 📝 Features
+
+- Persistent history of last 10 sessions.
+- Timer
+- 3 Themes
+- Multiple players
+- Scoer streak logging
+- Beginner/Grandmaster modes
 
 ## 🛠️ Tech
 
