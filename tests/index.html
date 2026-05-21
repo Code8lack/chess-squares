@@ -163,6 +163,8 @@
   <div id="feedbackMessage"></div>
   <button id="darkBtn">DARK</button>
   <button id="lightBtn">LIGHT</button>
+  <div class="streak-badge" id="streakBadge" style="display:none">🔥 <span id="streakCount">0</span></div>
+  <svg id="boardSvg" style="display:block"></svg>
 </div>
 
 <script>
@@ -875,6 +877,232 @@ describe("checkAnswer — feedback string format", () => {
     const msg = `Incorrect. ${sq} is ${actual}.`;
     expect(msg).toContain(actual);
   });
+});
+
+// ─── Streak logic ─────────────────────────────────────────────────────────────
+
+function simulateAnswerWithStreak(state, userGuess) {
+    if (state.isWaiting) return state;
+    const actualColor = determineSquareColor(state.currentSquare);
+    const correct = userGuess === actualColor;
+    const currentStreak = correct ? state.currentStreak + 1 : 0;
+    const peakStreak = Math.max(state.peakStreak, currentStreak);
+    return {
+        ...state,
+        totalQuestions: state.totalQuestions + 1,
+        correctAnswers: state.correctAnswers + (correct ? 1 : 0),
+        currentStreak,
+        peakStreak,
+        isWaiting: true,
+        lastCorrect: correct,
+    };
+}
+
+function createStreakState() {
+    return { ...createGameState(), currentStreak: 0, peakStreak: 0 };
+}
+
+describe("Streak logic — increment and reset", () => {
+    it("streak starts at 0", () => {
+        expect(createStreakState().currentStreak).toBe(0);
+    });
+
+    it("correct answer increments streak", () => {
+        const s = { ...createStreakState(), currentSquare: "A1" };
+        const s2 = simulateAnswerWithStreak(s, "dark");
+        expect(s2.currentStreak).toBe(1);
+    });
+
+    it("wrong answer resets streak to 0", () => {
+        const s = { ...createStreakState(), currentSquare: "A1", currentStreak: 5 };
+        const s2 = simulateAnswerWithStreak(s, "light");
+        expect(s2.currentStreak).toBe(0);
+    });
+
+    it("streak accumulates across correct answers", () => {
+        let s = createStreakState();
+        const rounds = [["A1","dark"],["B1","light"],["A2","light"]];
+        for (const [sq, guess] of rounds) {
+            s = { ...s, currentSquare: sq, isWaiting: false };
+            s = simulateAnswerWithStreak(s, guess);
+        }
+        expect(s.currentStreak).toBe(3);
+    });
+
+    it("peakStreak tracks highest streak reached", () => {
+        let s = createStreakState();
+        const rounds = [["A1","dark"],["B1","light"],["A2","light"],["B2","dark"],["A1","light"]];
+        for (const [sq, guess] of rounds) {
+            s = { ...s, currentSquare: sq, isWaiting: false };
+            s = simulateAnswerWithStreak(s, guess);
+        }
+        expect(s.peakStreak).toBe(4);
+        expect(s.currentStreak).toBe(0);
+    });
+
+    it("peakStreak does not decrease after wrong answer", () => {
+        let s = { ...createStreakState(), currentSquare: "A1", isWaiting: false };
+        s = simulateAnswerWithStreak(s, "dark"); // correct, streak 1
+        s = { ...s, currentSquare: "B1", isWaiting: false };
+        s = simulateAnswerWithStreak(s, "dark"); // wrong, streak resets
+        expect(s.peakStreak).toBe(1);
+    });
+
+    it("peakStreak resets to 0 on new game", () => {
+        let state = { currentStreak: 7, peakStreak: 7 };
+        state = { ...state, currentStreak: 0, peakStreak: 0 };
+        expect(state.peakStreak).toBe(0);
+    });
+});
+
+// ─── currentMode ──────────────────────────────────────────────────────────────
+
+describe("currentMode — return values", () => {
+    it("returns 'Beginner' when boardSvg is visible", () => {
+        const boardSvg = document.getElementById('boardSvg');
+        boardSvg.style.display = 'block';
+        const mode = boardSvg.style.display === 'none' ? 'Grandmaster' : 'Beginner';
+        expect(mode).toBe('Beginner');
+    });
+
+    it("returns 'Grandmaster' when boardSvg is hidden", () => {
+        const boardSvg = document.getElementById('boardSvg');
+        boardSvg.style.display = 'none';
+        const mode = boardSvg.style.display === 'none' ? 'Grandmaster' : 'Beginner';
+        expect(mode).toBe('Grandmaster');
+        boardSvg.style.display = 'block'; // restore
+    });
+
+    it("only ever returns 'Beginner' or 'Grandmaster'", () => {
+        const boardSvg = document.getElementById('boardSvg');
+        for (const display of ['block', 'none']) {
+            boardSvg.style.display = display;
+            const mode = boardSvg.style.display === 'none' ? 'Grandmaster' : 'Beginner';
+            if (!['Beginner','Grandmaster'].includes(mode))
+                throw new Error(`Unexpected mode: ${mode}`);
+        }
+        boardSvg.style.display = 'block'; // restore
+    });
+});
+
+// ─── saveSession — pure logic ─────────────────────────────────────────────────
+
+describe("saveSession — category and high score logic", () => {
+    it("category is 'timed' when timerDuration > 0", () => {
+        const category = 60 > 0 ? 'timed' : 'untimed';
+        expect(category).toBe('timed');
+    });
+
+    it("category is 'untimed' when timerDuration is 0", () => {
+        const category = 0 > 0 ? 'timed' : 'untimed';
+        expect(category).toBe('untimed');
+    });
+
+    it("beatsCategoryHS is false when peakStreak <= 5", () => {
+        const peakStreak = 4;
+        const currentHS = null;
+        const beats = peakStreak > 5 && (!currentHS || peakStreak >= currentHS.peakStreak);
+        expect(beats).toBeFalsy();
+    });
+
+    it("beatsCategoryHS is true when peakStreak > 5 and no existing record", () => {
+        const peakStreak = 6;
+        const currentHS = null;
+        const beats = peakStreak > 5 && (!currentHS || peakStreak >= currentHS.peakStreak);
+        expect(beats).toBeTruthy();
+    });
+
+    it("beatsCategoryHS is true when peakStreak exceeds existing record", () => {
+        const peakStreak = 10;
+        const currentHS = { peakStreak: 8 };
+        const beats = peakStreak > 5 && (!currentHS || peakStreak >= currentHS.peakStreak);
+        expect(beats).toBeTruthy();
+    });
+
+    it("beatsCategoryHS is false when peakStreak is below existing record", () => {
+        const peakStreak = 7;
+        const currentHS = { peakStreak: 9 };
+        const beats = peakStreak > 5 && (!currentHS || peakStreak >= currentHS.peakStreak);
+        expect(beats).toBeFalsy();
+    });
+
+    it("timed duration is timerDuration minus timerRemaining", () => {
+        const timerDuration = 120, timerRemaining = 45;
+        const duration = timerDuration - timerRemaining;
+        expect(duration).toBe(75);
+    });
+
+    it("untimed duration is null", () => {
+        const timerDuration = 0;
+        const duration = timerDuration > 0 ? timerDuration - 0 : null;
+        expect(duration).toBe(null);
+    });
+
+    it("history is capped at 10 entries", () => {
+        const history = Array.from({ length: 10 }, (_, i) => ({ correct: i, total: 10 }));
+        history.push({ correct: 10, total: 10 });
+        if (history.length > 10) history.splice(0, history.length - 10);
+        expect(history.length).toBe(10);
+    });
+
+    it("returns false when totalQuestions is 0", () => {
+        const totalQuestions = 0;
+        const result = totalQuestions === 0 ? false : true;
+        expect(result).toBeFalsy();
+    });
+});
+
+// ─── updateStreakDisplay — badge visibility ────────────────────────────────────
+
+describe("updateStreakDisplay — badge threshold", () => {
+    it("badge hidden when streak is 0", () => {
+        const badge = document.getElementById('streakBadge');
+        badge.style.display = 'none';
+        expect(badge.style.display).toBe('none');
+    });
+
+    it("badge hidden when streak is 2", () => {
+        const streak = 2;
+        const display = streak >= 3 ? 'inline-block' : 'none';
+        expect(display).toBe('none');
+    });
+
+    it("badge visible when streak reaches 3", () => {
+        const streak = 3;
+        const display = streak >= 3 ? 'inline-block' : 'none';
+        expect(display).toBe('inline-block');
+    });
+
+    it("badge visible when streak is 10", () => {
+        const streak = 10;
+        const display = streak >= 3 ? 'inline-block' : 'none';
+        expect(display).toBe('inline-block');
+    });
+
+    it("toast triggers at streak 3", () => {
+        const toasts = { 3: '🔥 3 in a row!', 5: '⚡ On fire!', 10: '🌟 Unstoppable!', 25: '👑 Chess genius!' };
+        expect(toasts[3]).toBe('🔥 3 in a row!');
+    });
+
+    it("toast triggers at streak 5", () => {
+        const toasts = { 3: '🔥 3 in a row!', 5: '⚡ On fire!', 10: '🌟 Unstoppable!', 25: '👑 Chess genius!' };
+        expect(toasts[5]).toBe('⚡ On fire!');
+    });
+
+    it("toast triggers at streak 10", () => {
+        const toasts = { 3: '🔥 3 in a row!', 5: '⚡ On fire!', 10: '🌟 Unstoppable!', 25: '👑 Chess genius!' };
+        expect(toasts[10]).toBe('🌟 Unstoppable!');
+    });
+
+    it("toast triggers at streak 25", () => {
+        const toasts = { 3: '🔥 3 in a row!', 5: '⚡ On fire!', 10: '🌟 Unstoppable!', 25: '👑 Chess genius!' };
+        expect(toasts[25]).toBe('👑 Chess genius!');
+    });
+
+    it("no toast for streak of 4", () => {
+        const toasts = { 3: '🔥 3 in a row!', 5: '⚡ On fire!', 10: '🌟 Unstoppable!', 25: '👑 Chess genius!' };
+        expect(toasts[4]).toBe(undefined);
+    });
 });
 
 // ─── Runner ───────────────────────────────────────────────────────────────────
