@@ -1,6 +1,6 @@
 # ♞ Chess Squares
 
-A simple web app to train chessboard square color recognition. Learn which squares are dark and light on a chessboard.
+A simple web app to train chessboard square color recognition. Learn which squares are dark and light on a chessboard. A 10th birthday gift for my chess genius niece!
 
 ## 🎯 How to Play
 
@@ -12,6 +12,15 @@ A simple web app to train chessboard square color recognition. Learn which squar
 ## 🧠 Why?
 
 Chess notation requires knowing square colors quickly. This trainer helps build that intuition.
+
+## 📝 Features
+
+- Persistent history of last 10 sessions.
+- Timer
+- 3 Themes
+- Multiple players
+- Scoer streak logging
+- Beginner/Grandmaster modes
 
 ## 🛠️ Tech
 
@@ -39,8 +48,9 @@ open index.html
 # or use a local server:
 python -m http.server 8000
 ```
-<img width="735" height="655" alt="Screenshotted 2026-05-18 at 13 48 18" src="https://github.com/user-attachments/assets/686c59ae-47d1-4dd4-a6b6-5bbca7ae29e7" />
-<img width="730" height="656" alt="Screenshotted 2026-05-18 at 13 48 04" src="https://github.com/user-attachments/assets/27404929-ebce-4168-94a4-c8a90e96fc36" />
-<img width="730" height="654" alt="Screenshotted 2026-05-18 at 13 49 53" src="https://github.com/user-attachments/assets/7d7e0d89-192d-42db-84cb-4098db22d4af" />
-<img width="730" height="655" alt="Screenshotted 2026-05-18 at 13 49 35" src="https://github.com/user-attachments/assets/4a31b747-3f8f-4ae8-85f7-5fc644ae3276" />
+<img width="1280" height="800" alt="Screenshotted 2026-05-21 at 11 04 36" src="https://github.com/user-attachments/assets/fe80c714-40f5-4eac-8aa3-91d664e081b3" />
+<img width="1280" height="800" alt="Screenshotted 2026-05-21 at 11 04 52" src="https://github.com/user-attachments/assets/b8b2c609-a073-4ae3-8c4d-05b4a92756e4" />
+<img width="1280" height="800" alt="Screenshotted 2026-05-21 at 11 14 01" src="https://github.com/user-attachments/assets/e1d3d2a9-ec45-41c1-b0bc-07e05a6ff7d0" />
+<img width="1280" height="800" alt="Screenshotted 2026-05-21 at 11 08 49" src="https://github.com/user-attachments/assets/7282e50c-9fa4-4110-b10b-58b4eeca96d1" />
+
 
