@@ -849,7 +849,7 @@ body::before {
     --theme-score-bg:  rgba(74,40,0,0.25);
     --theme-square:    #FFE566;
     --theme-btn-dark:  #4a2800;
-    --theme-btn-light: #FFF8DC;
+    --theme-btn-light: #FFE566;
     --theme-text:      #3a1a00;
     --theme-accent:    #F5C400;
 }
