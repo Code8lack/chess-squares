@@ -49,7 +49,7 @@ const HS_ALLTIME_KEY = 'chessSquares_hs_alltime';
 // Theme
 const THEME_KEY = 'chessSquares_theme';
 (function applyStoredTheme() {
-    const t = localStorage.getItem(THEME_KEY);
+    const t = localStorage.getItem(THEME_KEY) || 'mustard';
     if (t) document.documentElement.setAttribute('data-theme', t);
 })();
 
